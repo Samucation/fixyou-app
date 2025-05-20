@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    environment:
+      POSTGRES_DB: fixyou_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: fixyou123
+    ports:
+      - "5432:5432"
+
+  flyway:
+    image: flyway/flyway
+    container_name: flyway
+    depends_on:
+      - postgres
+    environment:
+      FLYWAY_URL: jdbc:postgresql://postgres:5432/fixyou_db
+      FLYWAY_USER: postgres
+      FLYWAY_PASSWORD: fixyou123
+    volumes:
+      - ./src/main/resources/db/migration:/flyway/sql
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    container_name: keycloak
+    command: ["start-dev"]
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/fixyou_db
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: fixyou123
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
+    volumes:
+      - ./keycloak-init.sh:/opt/keycloak/keycloak-init.sh
+    entrypoint: ["/bin/bash", "-c", "/opt/keycloak/keycloak-init.sh & /opt/keycloak/bin/kc.sh start-dev"]
+
+  fixyou-app:
+    build: .
+    container_name: fixyou-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - flyway
+      - keycloak
+    environment:
+      JDBC_DATABASE_URL: jdbc:postgresql://postgres:5432/fixyou_db
+      JDBC_DATABASE_USERNAME: postgres
+      JDBC_DATABASE_PASSWORD: fixyou123
+      ENV_FILE: docker
+      ENV_PATH: /app/env
+      KEYCLOAK_URL: http://keycloak:8080
+      KEYCLOAK_REALM: fixyou-realm

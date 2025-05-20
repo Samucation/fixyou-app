@@ -1,0 +1,8 @@
+2025-05-20T14:41:20.125 INFO Carregando variáveis de ambiente do arquivo .env para ambiente local.
+2025-05-20T14:41:20.148 INFO Variáveis de ambiente carregadas do .env: JDBC_DATABASE_URL: [jdbc:postgresql://localhost:5433/amicred_db], JDBC_DATABASE_USERNAME: [postgres], JDBC_DATABASE_PASSWORD: [amicred], HIBERNATE_DDL_AUTO: [update]
+2025-05-20T14:41:20.582 INFO Starting FixYouApplication using Java 21.0.7 with PID 15612 (C:\Dev\Workspace\fixyou\target\classes started by samuel.duarte in C:\Dev\Workspace\fixyou)
+2025-05-20T14:41:20.586 INFO No active profile set, falling back to 1 default profile: "default"
+2025-05-20T14:47:19.555 INFO Carregando variáveis de ambiente do arquivo .env para ambiente local.
+2025-05-20T14:47:19.579 INFO Variáveis de ambiente carregadas do .env: JDBC_DATABASE_URL: [jdbc:postgresql://localhost:5433/amicred_db], JDBC_DATABASE_USERNAME: [postgres], JDBC_DATABASE_PASSWORD: [amicred], HIBERNATE_DDL_AUTO: [update]
+2025-05-20T14:47:20.014 INFO Starting FixYouApplication using Java 21.0.7 with PID 20616 (C:\Dev\Workspace\fixyou\target\classes started by samuel.duarte in C:\Dev\Workspace\fixyou)
+2025-05-20T14:47:20.018 INFO No active profile set, falling back to 1 default profile: "default"

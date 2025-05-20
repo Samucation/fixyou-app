@@ -1,0 +1,5 @@
+
+-- DROP TABLES OS SYSTEM
+
+DROP TABLE IF EXISTS public.tb_sample;
+
