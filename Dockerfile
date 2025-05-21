@@ -47,10 +47,11 @@ ENV ENV_PATH=/app/env
 
 # Adiciona variáveis de ambiente do Keycloak
 ENV KEYCLOAK_URL=http://keycloak:8080
-ENV KEYCLOAK_REALM=amicred-realm
+ENV KEYCLOAK_REALM=fixyourealm
 
 # Exponha as portas para o aplicativo e para a depuração
 EXPOSE 8080
+EXPOSE 8081
 EXPOSE 8082
 EXPOSE 5005
 

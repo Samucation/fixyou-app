@@ -1,5 +1,5 @@
 
 -- DROP TABLES OS SYSTEM
 
-DROP TABLE IF EXISTS public.tb_sample;
+DROP TABLE IF EXISTS fixyou.tb_sample;
 

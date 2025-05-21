@@ -1,6 +1,6 @@
 -- Inserting data into tb_sample table
 
-INSERT INTO public.tb_sample (id, name) VALUES
+INSERT INTO fixyou.tb_sample (id, name) VALUES
 (1, 'Technology'),
 (2, 'Science'),
 (3, 'Health'),

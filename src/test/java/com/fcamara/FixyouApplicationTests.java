@@ -4,12 +4,12 @@ import com.fcamara.model.User;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AmicredApplicationTests {
+class FixyouApplicationTests {
 
 	//@Test
 	void contextLoads() {
 
-		User userzinho = new User();
+		User user = new User();
 	}
 
 }

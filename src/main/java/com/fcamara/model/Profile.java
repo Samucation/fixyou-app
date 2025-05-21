@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 
 @Entity
-@Table(name = "tb_profile", schema = "amicred")
+@Table(name = "tb_profile", schema = "fixyou")
 @SequenceGenerator(name = "tb_profile_seq", allocationSize = 1)
 public class Profile {
 

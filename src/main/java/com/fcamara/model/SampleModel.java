@@ -3,7 +3,7 @@ package com.fcamara.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "tb_sample")
+@Table(name = "tb_sample", schema = "fixyou")
 @SequenceGenerator(name = "tb_sample_seq", allocationSize = 1)
 public class SampleModel {
 

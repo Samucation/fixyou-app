@@ -35,7 +35,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @PreAuthorize("hasRole('LISTAR_USUARIOS')")
+    @PreAuthorize("hasRole('LIST_USERS')")
     @GetMapping
     public ResponseEntity<List<User>> getAllUsersOrderedByUsername() {
         List<User> users = userService.findAllOrderedByUsername();

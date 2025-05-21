@@ -38,52 +38,100 @@ public class FixYouApplication {
 	}
 
 	private static void loadEnvironmentsConfigurations(){
-		// Verifica o tipo de ambiente: "local" para desenvolvimento local ou "remote" para produção ou ambiente remoto
 		String environmentType = System.getenv("APPLICATION_ENVIRONMENT");
 
 		if ("local".equalsIgnoreCase(environmentType)) {
 			LOGGER.info("Carregando variáveis de ambiente do arquivo .env para ambiente local.");
 
-			String envPath = System.getenv("ENV_PATH"); // Valor esperado: ./env
-			String envFile = System.getenv("ENV_FILE"); // Valor esperado: windows-local
+			String envPath = System.getenv("ENV_PATH");
+			String envFile = System.getenv("ENV_FILE");
 
-			// Carrega o arquivo .env apenas em ambiente local
 			Dotenv dotenv = Dotenv.configure()
-					.directory(envPath) // Usa o valor da variável ENV_PATH
-					.filename(envFile + ".env") // Usa o valor da variável ENV_FILE e adiciona .env
+					.directory(envPath)
+					.filename(envFile + ".env")
 					.load();
 
+			// Infra
 			System.setProperty("server.port", dotenv.get("SERVER_PORT"));
+			System.setProperty("APPLICATION_NAME", dotenv.get("APPLICATION_NAME"));
 
-			// Define as variáveis de ambiente da base de dados.
+			// Database
 			System.setProperty("spring.datasource.url", dotenv.get("JDBC_DATABASE_URL"));
 			System.setProperty("spring.datasource.username", dotenv.get("JDBC_DATABASE_USERNAME"));
 			System.setProperty("spring.datasource.password", dotenv.get("JDBC_DATABASE_PASSWORD"));
 			System.setProperty("spring.jpa.hibernate.ddl-auto", dotenv.get("HIBERNATE_DDL_AUTO"));
 
-			LOGGER.info("Variáveis de ambiente carregadas do .env: JDBC_DATABASE_URL: [{}], JDBC_DATABASE_USERNAME: [{}], JDBC_DATABASE_PASSWORD: [{}], HIBERNATE_DDL_AUTO: [{}]",
+			// JPA e Logs SQL
+			System.setProperty("JPA_SHOW_SQL", dotenv.get("JPA_SHOW_SQL", "true"));
+			System.setProperty("HIBERNATE_DIALECT", dotenv.get("HIBERNATE_DIALECT", "org.hibernate.dialect.PostgreSQLDialect"));
+			System.setProperty("SQL_LOG_LEVEL", dotenv.get("SQL_LOG_LEVEL", "DEBUG"));
+			System.setProperty("SQL_BIND_LOG_LEVEL", dotenv.get("SQL_BIND_LOG_LEVEL", "TRACE"));
+
+			// Keycloak
+			System.setProperty("KEYCLOAK_ISSUER_URI", dotenv.get("KEYCLOAK_ISSUER_URI"));
+			System.setProperty("KEYCLOAK_JWK_SET_URI", dotenv.get("KEYCLOAK_JWK_SET_URI"));
+			System.setProperty("CLIENT_VALUE", dotenv.get("CLIENT_VALUE"));
+
+			// CORS
+			System.setProperty("CORS_ALLOWED_LIST", dotenv.get("CORS_ALLOWED_LIST"));
+
+			// Outros Logs
+			System.setProperty("SECURITY_LOG_LEVEL", dotenv.get("SECURITY_LOG_LEVEL", "DEBUG"));
+			System.setProperty("WEB_LOG_LEVEL", dotenv.get("WEB_LOG_LEVEL", "DEBUG"));
+
+			System.setProperty("SPRINT_SECURITY_BASIC", dotenv.get("SPRINT_SECURITY_BASIC"));
+
+			// Flyway
+			System.setProperty("FLYWAY_CLEAN_DISABLED", dotenv.get("FLYWAY_CLEAN_DISABLED", "true"));
+
+			LOGGER.info("Environments loaded do .env: JDBC_DATABASE_URL: [{}], JDBC_DATABASE_USERNAME: [{}], KEYCLOAK_ISSUER_URI: [{}], CORS_ALLOWED_LIST: [{}]",
 					dotenv.get("JDBC_DATABASE_URL"),
 					dotenv.get("JDBC_DATABASE_USERNAME"),
-					dotenv.get("JDBC_DATABASE_PASSWORD"),
-					dotenv.get("HIBERNATE_DDL_AUTO"));
+					dotenv.get("KEYCLOAK_ISSUER_URI"),
+					dotenv.get("CORS_ALLOWED_LIST")
+			);
 
 		} else {
-			LOGGER.info("Ambiente remoto detectado. Usando variáveis de ambiente configuradas no sistema.");
+			LOGGER.info("Ambiente remoto detectado. Usando variáveis de ambiente do sistema.");
 
-			// As variáveis de ambiente são definidas diretamente no ambiente de execução (ex: no Azure, AWS, etc.)
+			// Infra
+			System.setProperty("server.port", System.getenv("SERVER_PORT"));
+			System.setProperty("APPLICATION_NAME", System.getenv("APPLICATION_NAME"));
+
+			// Database
 			System.setProperty("spring.datasource.url", System.getenv("JDBC_DATABASE_URL"));
 			System.setProperty("spring.datasource.username", System.getenv("JDBC_DATABASE_USERNAME"));
 			System.setProperty("spring.datasource.password", System.getenv("JDBC_DATABASE_PASSWORD"));
 			System.setProperty("spring.jpa.hibernate.ddl-auto", System.getenv("HIBERNATE_DDL_AUTO"));
 
-			LOGGER.info("Variáveis de ambiente do sistema configuradas: JDBC_DATABASE_URL: [{}], JDBC_DATABASE_USERNAME: [{}], JDBC_DATABASE_PASSWORD: [{}], HIBERNATE_DDL_AUTO: [{}]",
+			// JPA e Logs SQL
+			System.setProperty("JPA_SHOW_SQL", System.getenv("JPA_SHOW_SQL"));
+			System.setProperty("HIBERNATE_DIALECT", System.getenv("HIBERNATE_DIALECT"));
+			System.setProperty("SQL_LOG_LEVEL", System.getenv("SQL_LOG_LEVEL"));
+			System.setProperty("SQL_BIND_LOG_LEVEL", System.getenv("SQL_BIND_LOG_LEVEL"));
+
+			// Keycloak
+			System.setProperty("KEYCLOAK_ISSUER_URI", System.getenv("KEYCLOAK_ISSUER_URI"));
+			System.setProperty("KEYCLOAK_JWK_SET_URI", System.getenv("KEYCLOAK_JWK_SET_URI"));
+			System.setProperty("CLIENT_VALUE", System.getenv("CLIENT_VALUE"));
+
+			// CORS
+			System.setProperty("CORS_ALLOWED_LIST", System.getenv("CORS_ALLOWED_LIST"));
+
+			// Outros Logs
+			System.setProperty("SECURITY_LOG_LEVEL", System.getenv("SECURITY_LOG_LEVEL"));
+			System.setProperty("WEB_LOG_LEVEL", System.getenv("WEB_LOG_LEVEL"));
+
+			// Flyway
+			System.setProperty("FLYWAY_CLEAN_DISABLED", System.getenv("FLYWAY_CLEAN_DISABLED"));
+			System.setProperty("SPRINT_SECURITY_BASIC", System.getenv("SPRINT_SECURITY_BASIC"));
+
+			LOGGER.info("Environments loaded: JDBC_DATABASE_URL: [{}], JDBC_DATABASE_USERNAME: [{}], KEYCLOAK_ISSUER_URI: [{}], CORS_ALLOWED_LIST: [{}]",
 					System.getenv("JDBC_DATABASE_URL"),
 					System.getenv("JDBC_DATABASE_USERNAME"),
-					System.getenv("JDBC_DATABASE_PASSWORD"),
-					System.getenv("HIBERNATE_DDL_AUTO"));
+					System.getenv("KEYCLOAK_ISSUER_URI"),
+					System.getenv("CORS_ALLOWED_LIST")
+			);
 		}
 	}
-
 }
-
-
