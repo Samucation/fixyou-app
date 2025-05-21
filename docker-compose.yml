@@ -12,7 +12,7 @@ services:
       - "5432:5432"
 
   keycloak:
-    image: quay.io/keycloak/keycloak:23.0
+    image: samucation/keycloak:latest
     container_name: keycloak
     command: ["start-dev"]
     environment:
@@ -27,11 +27,11 @@ services:
     depends_on:
       - postgres
 
-  fixyou-app:
+  app:
     build: .
     container_name: fixyou_app
     ports:
-      - "8082:8080"
+      - "8080:8080"
     depends_on:
       - postgres
       - keycloak
