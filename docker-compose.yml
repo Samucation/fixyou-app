@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres:14
+    image: samucation/postgres-m33:latest
     container_name: postgres
     environment:
       POSTGRES_DB: m33_db
@@ -10,6 +10,8 @@ services:
       POSTGRES_PASSWORD: F7@uM!dQ#2kLpZxT$9eV
     ports:
       - "5432:5432"
+    networks:
+      - fixyou-network
 
   keycloak:
     image: samucation/keycloak:latest
@@ -22,24 +24,35 @@ services:
       KC_DB_URL: jdbc:postgresql://postgres:5432/m33_db
       KC_DB_USERNAME: postgres
       KC_DB_PASSWORD: F7@uM!dQ#2kLpZxT$9eV
+      KC_HOSTNAME: 192.168.1.16
+      KC_HOSTNAME_STRICT: false
     ports:
-      - "8081:8080"
+      - "8080:8080"
     depends_on:
       - postgres
+    networks:
+      - fixyou-network
 
   app:
     build: .
     container_name: fixyou_app
     ports:
-      - "8080:8080"
+      - "8082:8080"
     depends_on:
       - postgres
       - keycloak
     environment:
+      APPLICATION_ENVIRONMENT: local
       JDBC_DATABASE_URL: jdbc:postgresql://postgres:5432/m33_db
       JDBC_DATABASE_USERNAME: postgres
       JDBC_DATABASE_PASSWORD: F7@uM!dQ#2kLpZxT$9eV
       ENV_FILE: docker
       ENV_PATH: /app/env
-      KEYCLOAK_URL: http://keycloak:8081/
+      KEYCLOAK_URL: http://192.168.1.16:8080/
       KEYCLOAK_REALM: fixyou-realm
+    networks:
+      - fixyou-network
+
+networks:
+  fixyou-network:
+    external: true
