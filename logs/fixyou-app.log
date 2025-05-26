@@ -346,3 +346,40 @@
 2025-05-22T11:55:13.581 INFO Starting FixYouApplication using Java 21.0.7 with PID 12984 (C:\Dev\Workspace\fixyou\target\classes started by samuel.duarte in C:\Dev\Workspace\fixyou)
 2025-05-22T11:55:13.586 INFO No active profile set, falling back to 1 default profile: "default"
 2025-05-22T11:55:19.976 INFO Started FixYouApplication in 6.829 seconds (process running for 8.174)
+2025-05-26T15:37:04.186 INFO Carregando variáveis de ambiente do arquivo .env para ambiente local.
+2025-05-26T15:37:04.246 INFO Environments loaded do .env: JDBC_DATABASE_URL: [jdbc:postgresql://localhost:5432/m33_db], JDBC_DATABASE_USERNAME: [postgres], KEYCLOAK_ISSUER_URI: [http://192.168.1.16:8080/realms/fixyourealm], CORS_ALLOWED_LIST: [http://localhost:8081,http://localhost:8083,http://localhost:4200]
+2025-05-26T15:37:05.113 INFO Starting FixYouApplication using Java 21.0.7 with PID 15320 (C:\Dev\Workspace\fixyou\target\classes started by samuel.duarte in C:\Dev\Workspace\fixyou)
+2025-05-26T15:37:05.121 INFO No active profile set, falling back to 1 default profile: "default"
+2025-05-26T15:45:42.003 INFO Carregando variáveis de ambiente do arquivo .env para ambiente local.
+2025-05-26T15:45:42.042 INFO Environments loaded do .env: JDBC_DATABASE_URL: [jdbc:postgresql://localhost:5432/m33_db], JDBC_DATABASE_USERNAME: [postgres], KEYCLOAK_ISSUER_URI: [http://192.168.1.16:8080/realms/fixyourealm], CORS_ALLOWED_LIST: [http://localhost:8081,http://localhost:8083,http://localhost:4200]
+2025-05-26T15:45:42.936 INFO Starting FixYouApplication using Java 21.0.7 with PID 14936 (C:\Dev\Workspace\fixyou\target\classes started by samuel.duarte in C:\Dev\Workspace\fixyou)
+2025-05-26T15:45:42.944 INFO No active profile set, falling back to 1 default profile: "default"
+2025-05-26T15:46:48.915 INFO Carregando variáveis de ambiente do arquivo .env para ambiente local.
+2025-05-26T15:46:48.957 INFO Environments loaded do .env: JDBC_DATABASE_URL: [jdbc:postgresql://localhost:5432/m33_db], JDBC_DATABASE_USERNAME: [postgres], KEYCLOAK_ISSUER_URI: [http://192.168.1.16:8080/realms/fixyourealm], CORS_ALLOWED_LIST: [http://localhost:8081,http://localhost:8083,http://localhost:4200]
+2025-05-26T15:46:49.726 INFO Starting FixYouApplication using Java 21.0.7 with PID 23440 (C:\Dev\Workspace\fixyou\target\classes started by samuel.duarte in C:\Dev\Workspace\fixyou)
+2025-05-26T15:46:49.731 INFO No active profile set, falling back to 1 default profile: "default"
+2025-05-26T15:51:39.278 INFO Carregando variáveis de ambiente do arquivo .env para ambiente local.
+2025-05-26T15:51:39.334 INFO Environments loaded do .env: JDBC_DATABASE_URL: [jdbc:postgresql://localhost:5432/m33_db], JDBC_DATABASE_USERNAME: [postgres], KEYCLOAK_ISSUER_URI: [http://192.168.1.16:8080/realms/fixyourealm], CORS_ALLOWED_LIST: [http://localhost:8081,http://localhost:8083,http://localhost:4200]
+2025-05-26T15:51:40.784 INFO Starting FixYouApplication using Java 21.0.7 with PID 15052 (C:\Dev\Workspace\fixyou\target\classes started by samuel.duarte in C:\Dev\Workspace\fixyou)
+2025-05-26T15:51:40.819 INFO No active profile set, falling back to 1 default profile: "default"
+2025-05-26T15:56:54.045 INFO Carregando variáveis de ambiente do arquivo .env para ambiente local.
+2025-05-26T15:56:54.083 INFO Environments loaded do .env: JDBC_DATABASE_URL: [jdbc:postgresql://localhost:5432/m33_db], JDBC_DATABASE_USERNAME: [postgres], KEYCLOAK_ISSUER_URI: [http://192.168.1.16:8080/realms/fixyourealm], CORS_ALLOWED_LIST: [http://localhost:8081,http://localhost:8083,http://localhost:4200]
+2025-05-26T15:56:54.605 INFO Starting FixYouApplication using Java 21.0.7 with PID 4028 (C:\Dev\Workspace\fixyou\target\classes started by samuel.duarte in C:\Dev\Workspace\fixyou)
+2025-05-26T15:56:54.605 INFO No active profile set, falling back to 1 default profile: "default"
+2025-05-26T16:01:00.939 INFO Carregando variáveis de ambiente do arquivo .env para ambiente local.
+2025-05-26T16:01:00.970 INFO Environments loaded do .env: JDBC_DATABASE_URL: [jdbc:postgresql://localhost:5432/m33_db], JDBC_DATABASE_USERNAME: [postgres], KEYCLOAK_ISSUER_URI: [http://192.168.1.16:8080/realms/fixyourealm], CORS_ALLOWED_LIST: [http://localhost:8081,http://localhost:8083,http://localhost:4200]
+2025-05-26T16:01:01.452 INFO Starting FixYouApplication using Java 21.0.7 with PID 18968 (C:\Dev\Workspace\fixyou\target\classes started by samuel.duarte in C:\Dev\Workspace\fixyou)
+2025-05-26T16:01:01.456 INFO No active profile set, falling back to 1 default profile: "default"
+2025-05-26T16:04:21.419 INFO Carregando variáveis de ambiente do arquivo .env para ambiente local.
+2025-05-26T16:04:21.450 INFO Environments loaded do .env: JDBC_DATABASE_URL: [jdbc:postgresql://localhost:5432/m33_db], JDBC_DATABASE_USERNAME: [postgres], KEYCLOAK_ISSUER_URI: [http://192.168.1.16:8080/realms/fixyourealm], CORS_ALLOWED_LIST: [http://localhost:8081,http://localhost:8083,http://localhost:4200]
+2025-05-26T16:04:21.936 INFO Starting FixYouApplication using Java 21.0.7 with PID 19888 (C:\Dev\Workspace\fixyou\target\classes started by samuel.duarte in C:\Dev\Workspace\fixyou)
+2025-05-26T16:04:21.940 INFO No active profile set, falling back to 1 default profile: "default"
+2025-05-26T16:11:14.476 INFO Carregando variáveis de ambiente do arquivo .env para ambiente local.
+2025-05-26T16:11:14.506 INFO Environments loaded do .env: JDBC_DATABASE_URL: [jdbc:postgresql://localhost:5432/m33_db], JDBC_DATABASE_USERNAME: [postgres], KEYCLOAK_ISSUER_URI: [http://192.168.1.16:8080/realms/fixyourealm], CORS_ALLOWED_LIST: [http://localhost:8081,http://localhost:8083,http://localhost:4200]
+2025-05-26T16:11:15.015 INFO Starting FixYouApplication using Java 21.0.7 with PID 12564 (C:\Dev\Workspace\fixyou\target\classes started by samuel.duarte in C:\Dev\Workspace\fixyou)
+2025-05-26T16:11:15.018 INFO No active profile set, falling back to 1 default profile: "default"
+2025-05-26T16:11:21.361 INFO Started FixYouApplication in 6.76 seconds (process running for 7.964)
+2025-05-26T16:14:42.512 INFO Carregando variáveis de ambiente do arquivo .env para ambiente local.
+2025-05-26T16:14:42.539 INFO Environments loaded do .env: JDBC_DATABASE_URL: [jdbc:postgresql://localhost:5432/m33_db], JDBC_DATABASE_USERNAME: [postgres], KEYCLOAK_ISSUER_URI: [http://192.168.1.16:8080/realms/fixyourealm], CORS_ALLOWED_LIST: [http://localhost:8081,http://localhost:8083,http://localhost:4200]
+2025-05-26T16:14:42.997 INFO Starting FixYouApplication using Java 21.0.7 with PID 12744 (C:\Dev\Workspace\fixyou\target\classes started by samuel.duarte in C:\Dev\Workspace\fixyou)
+2025-05-26T16:14:43.001 INFO No active profile set, falling back to 1 default profile: "default"

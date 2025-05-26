@@ -2,6 +2,7 @@ package com.fcamara.model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_profile", schema = "fixyou")
@@ -12,17 +13,17 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_profile_seq")
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, unique = true)
-    private ProfileType type;
+    private String unit;
+    private String department;
+    private String preferredShift;
+    private String jobTitle;
 
-    public Profile(ProfileType type) {
-        this.type = type;
-    }
-
-    public Profile(Long id, ProfileType type) {
+    public Profile(Long id, String unit, String department, String preferredShift, String jobTitle) {
         this.id = id;
-        this.type = type;
+        this.unit = unit;
+        this.department = department;
+        this.preferredShift = preferredShift;
+        this.jobTitle = jobTitle;
     }
 
     public Profile() {
@@ -36,20 +37,58 @@ public class Profile {
         this.id = id;
     }
 
-    public ProfileType getType() {
-        return type;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setType(ProfileType type) {
-        this.type = type;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getPreferredShift() {
+        return preferredShift;
+    }
+
+    public void setPreferredShift(String preferredShift) {
+        this.preferredShift = preferredShift;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Profile profile = (Profile) o;
+        return Objects.equals(id, profile.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 
     @Override
     public String toString() {
         return "Profile{" +
                 "id=" + id +
-                ", type=" + type +
+                ", unit='" + unit + '\'' +
+                ", department='" + department + '\'' +
+                ", preferredShift='" + preferredShift + '\'' +
+                ", jobTitle='" + jobTitle + '\'' +
                 '}';
     }
 }

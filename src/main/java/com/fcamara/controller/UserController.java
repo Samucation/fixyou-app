@@ -2,6 +2,7 @@ package com.fcamara.controller;
 
 import com.fcamara.model.Profile;
 import com.fcamara.model.User;
+import com.fcamara.model.UserRole;
 import com.fcamara.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
@@ -21,39 +22,61 @@ public class UserController {
         this.userService = userService;
     }
 
-
-    @PreAuthorize("hasRole('CREATE_USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('GESTOR')")
     @GetMapping("/{username}")
     public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
         Optional<User> user = userService.findByUsername(username);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return user.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/profile")
-    public ResponseEntity<List<User>> getUsersByProfileType(@RequestParam String type) {
-        List<User> users = userService.findByProfileType(type);
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/by-role")
+    public ResponseEntity<List<User>> getUsersByRole(@RequestParam UserRole role) {
+        List<User> users = userService.findByRole(role);
         return ResponseEntity.ok(users);
     }
 
-    @PreAuthorize("hasRole('LIST_USERS')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('GESTOR')")
     @GetMapping
     public ResponseEntity<List<User>> getAllUsersOrderedByUsername() {
         List<User> users = userService.findAllOrderedByUsername();
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/count")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('GESTOR')")
+    @PostMapping("/count-by-profile")
     public ResponseEntity<Long> countUsersByProfile(@RequestBody Profile profile) {
         Long count = userService.countByProfile(profile);
         return ResponseEntity.ok(count);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('GESTOR')")
+    @PostMapping("/by-profile")
+    public ResponseEntity<List<User>> getUsersByProfile(@RequestBody Profile profile) {
+        List<User> users = userService.findByProfile(profile);
+        return ResponseEntity.ok(users);
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('GESTOR')")
+    @GetMapping("/by-unit")
+    public ResponseEntity<List<User>> getUsersByUnit(@RequestParam String unit) {
+        List<User> users = userService.findByUnit(unit);
+        return ResponseEntity.ok(users);
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('GESTOR')")
+    @GetMapping("/by-department")
+    public ResponseEntity<List<User>> getUsersByDepartment(@RequestParam String department) {
+        List<User> users = userService.findByDepartment(department);
+        return ResponseEntity.ok(users);
+    }
+
     @GetMapping("/debug/roles")
-    public ResponseEntity<?> getRoles() {
+    public ResponseEntity<?> getCurrentUserRoles() {
         return ResponseEntity.ok(
                 SecurityContextHolder.getContext().getAuthentication().getAuthorities()
         );
     }
-
 
 }

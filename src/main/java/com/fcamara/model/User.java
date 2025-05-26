@@ -1,6 +1,9 @@
 package com.fcamara.model;
 
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_users", schema = "fixyou")
@@ -17,24 +20,33 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "tb_user_roles",
+            schema = "fixyou",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
 
-    public User(){
+    public User() {}
 
-    }
-
-    public User(Long id, String username, String password, Profile profile) {
+    public User(Long id, String username, String password, Set<Role> roles, Profile profile) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.roles = roles;
         this.profile = profile;
     }
 
-    public User(String username, String password, Profile profile) {
+    public User(String username, String password, Set<Role> roles, Profile profile) {
         this.username = username;
         this.password = password;
+        this.roles = roles;
         this.profile = profile;
     }
 
@@ -62,6 +74,14 @@ public class User {
         this.password = password;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     public Profile getProfile() {
         return profile;
     }
@@ -70,7 +90,17 @@ public class User {
         this.profile = profile;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 
     @Override
     public String toString() {
@@ -78,51 +108,8 @@ public class User {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", roles=" + roles +
                 ", profile=" + profile +
                 '}';
-    }
-
-
-    public static final class Builder {
-        private Long id;
-        private String username;
-        private String password;
-        private Profile profile;
-
-        private Builder() {
-        }
-
-        public static Builder anUser() {
-            return new Builder();
-        }
-
-        public Builder id(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder username(String username) {
-            this.username = username;
-            return this;
-        }
-
-        public Builder password(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public Builder profile(Profile profile) {
-            this.profile = profile;
-            return this;
-        }
-
-        public User build() {
-            User user = new User();
-            user.setId(id);
-            user.setUsername(username);
-            user.setPassword(password);
-            user.setProfile(profile);
-            return user;
-        }
     }
 }

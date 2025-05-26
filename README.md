@@ -50,6 +50,8 @@ será executada. ( Modo de produção ) Abaixo existe a explicação de como rod
 - - Resetar migrações ou reparar migrações do banco de dados, via cmd ou terminal rodar o comando: ```mvn flyway:repair```
 - - Executar a instalação de dependencias do projeto dando skip dos testes, via cmd ou terminal rodar o comando: ``` mvn clean install -DskipTests```
 - - Recriar a imagem docker da aplicação, caso esteja rodando a aplicação no modo 01 ```docker compose up --build``` ou por qualquer outro motivo.
+- - Fazendo backup localmente dos Realm da aplicação do Keycloak ```docker cp keycloak:/opt/keycloak/data/export ./keycloak-data```
+- - Subindo a aplicação pela primeira vez via docker: ```docker-compose up```
 
 ### **04 - Acessando e configurando o keycloak para funcionar a aplicação** ###
 - - Para acessar o keycloak use o url local http://localhost:8081 <strong style="color: darkred"> <strong>NOTA:</strong> O keycloak só estará na porta 8081 caso seja criado pelos comandos docker-compose up rodando na raiz da aplicação. </strong>
@@ -118,4 +120,6 @@ Troque os valores do CURL em:
 
 ## **Keycloak notas bonus, Novos endpoins precisarão de configuração**
 - - Caso queira incluir novos endpoints será necessário na sessão client do Keycloak adicionar essas novas URLS, caso contrário o keycloak não terá acesso as urls e o sistema não funcionará.
+
+
 
