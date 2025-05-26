@@ -60,7 +60,8 @@ A seguir, você encontrará as instruções para executar a aplicação em cada 
 - - Resetar migrações ou reparar migrações do banco de dados, via cmd ou terminal rodar o comando: ```mvn flyway:repair```
 - - Executar a instalação de dependencias do projeto dando skip dos testes, via cmd ou terminal rodar o comando: ``` mvn clean install -DskipTests```
 - - Recriar a imagem docker da aplicação, caso esteja rodando a aplicação no modo 01 ```docker compose up --build``` ou por qualquer outro motivo.
-- - Fazendo backup localmente dos Realm da aplicação do Keycloak ```docker cp keycloak:/opt/keycloak/data/export ./keycloak-data```
+- - Fazendo backup localmente dos Realm da aplicação do Keycloak execute o comando ```docker exec keycloak /opt/keycloak/bin/kc.sh export --dir=/opt/keycloak/data/export --realm=fixyourealm --users=realm_file ``` 
+- - e em seguida o comando ```docker cp keycloak:/opt/keycloak/data/export/fixyourealm-realm.json ./keycloak-data/import/```
 - - Subindo a aplicação pela primeira vez via docker: ```docker-compose up```
 
 ### **04 - Acessando e configurando o keycloak para funcionar a aplicação** ###
@@ -132,5 +133,51 @@ Troque os valores do CURL abaixo em:
 - - passworld: admin
 
 
+# 🛠️ Ajustes Necessários para Rodar o Projeto FixYou
 
+## 🔹 Arquivo: `docker-compose.yml`
+➡️ Alterar os IPs nas linhas:
+```
+KC_HOSTNAME: <SEU_IP>
+KEYCLOAK_URL: http://<SEU_IP>:8080/
+```
+Substituir `<SEU_IP>` pelo IP da sua máquina na rede local.
 
+## 🔹 Arquivo: `/env/docker-seu-nome.env`
+➡️ Alterar os IPs nas linhas:
+```
+KEYCLOAK_ISSUER_URI=http://<SEU_IP>:8080/realms/fixyourealm
+KEYCLOAK_JWK_SET_URI=http://<SEU_IP>:8080/realms/fixyourealm/protocol/openid-connect/certs
+```
+Substituir `<SEU_IP>` pelo IP da sua máquina.
+
+## 🔹 Arquivo: `/env/local-seu-nome.env`
+➡️ Fazer a mesma alteração dos IPs:
+```
+KEYCLOAK_ISSUER_URI=http://<SEU_IP>:8080/realms/fixyourealm
+KEYCLOAK_JWK_SET_URI=http://<SEU_IP>:8080/realms/fixyourealm/protocol/openid-connect/certs
+```
+
+## 🔹 Arquivo: `Dockerfile`
+➡️ Alterar o nome do arquivo de ambiente na linha:
+```
+ENV ENV_FILE=docker-seu-nome
+```
+
+## 🔹 Configuração IntelliJ (Run/Debug Configuration)
+➡️ Em Environment Variables, configurar:
+```
+APPLICATION_ENVIRONMENT=local;ENV_PATH=env;ENV_FILE=local-seu-nome
+```
+
+## 🔹 Backup e Restore do Keycloak
+➡️ O arquivo de backup do realm (`fixyourealm-realm.json`) deve estar no caminho:
+```
+/keycloak-data/import/fixyourealm-realm.json
+```
+O Keycloak faz a importação automática na inicialização se o arquivo estiver nesse caminho.
+
+---
+
+## 🔺 Atenção
+Sempre substituir os IPs fixos (`192.168.X.X`) pelo IP da sua própria máquina na rede. Isso é necessário para garantir que a aplicação e o Keycloak se comuniquem corretamente.

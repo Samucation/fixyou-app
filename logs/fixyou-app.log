@@ -404,3 +404,12 @@
 2025-05-26T18:41:38.542 INFO Client value: [null]
 2025-05-26T18:48:20.707 INFO Client value: [null]
 2025-05-26T18:48:34.724 INFO Client value: [null]
+2025-05-26T20:12:50.896 INFO Carregando variáveis de ambiente do arquivo .env para ambiente local.
+2025-05-26T20:12:50.923 INFO Environments loaded do .env: JDBC_DATABASE_URL: [jdbc:postgresql://localhost:5432/m33_db], JDBC_DATABASE_USERNAME: [postgres], KEYCLOAK_ISSUER_URI: [http://192.168.1.16:8080/realms/fixyourealm], CORS_ALLOWED_LIST: [http://localhost:8081,http://localhost:8083,http://localhost:4200]
+2025-05-26T20:12:51.434 INFO Starting FixYouApplication using Java 21.0.7 with PID 2176 (C:\Dev\Workspace\fixyou\target\classes started by samuel.duarte in C:\Dev\Workspace\fixyou)
+2025-05-26T20:12:51.438 INFO No active profile set, falling back to 1 default profile: "default"
+2025-05-26T20:12:57.258 INFO Started FixYouApplication in 6.229 seconds (process running for 7.424)
+2025-05-26T20:13:33.141 INFO Client value: [null]
+2025-05-26T20:14:01.929 INFO Client value: [null]
+2025-05-26T20:14:06.350 INFO Client value: [null]
+2025-05-26T20:14:11.105 INFO Client value: [null]

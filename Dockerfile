@@ -42,7 +42,7 @@ COPY env /app/env
 
 # Defina o arquivo de configuração das variáveis de ambiente
 ENV APPLICATION_ENVIRONMENT=local
-ENV ENV_FILE=docker
+ENV ENV_FILE=docker-samuca-fcamara
 ENV ENV_PATH=/app/env
 
 # Adiciona variáveis de ambiente do Keycloak
