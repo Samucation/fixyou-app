@@ -16,7 +16,7 @@ services:
   keycloak:
     image: samucation/keycloak:latest
     container_name: keycloak
-    command: ["start-dev"]
+    command: ["start-dev", "--import-realm"]
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
@@ -24,12 +24,14 @@ services:
       KC_DB_URL: jdbc:postgresql://postgres:5432/m33_db
       KC_DB_USERNAME: postgres
       KC_DB_PASSWORD: F7@uM!dQ#2kLpZxT$9eV
-      KC_HOSTNAME: 192.168.1.16
+      KC_HOSTNAME: 192.168.15.9
       KC_HOSTNAME_STRICT: false
     ports:
       - "8080:8080"
     depends_on:
       - postgres
+    volumes:
+      - ./keycloak-data:/opt/keycloak/data
     networks:
       - fixyou-network
 
@@ -48,8 +50,10 @@ services:
       JDBC_DATABASE_PASSWORD: F7@uM!dQ#2kLpZxT$9eV
       ENV_FILE: docker
       ENV_PATH: /app/env
-      KEYCLOAK_URL: http://192.168.1.16:8080/
+      KEYCLOAK_URL: http://192.168.15.9:8080/
       KEYCLOAK_REALM: fixyou-realm
+      FLYWAY_DEFAULT_SCHEMA: fixyou
+      FLYWAY_SCHEMAS: fixyou
     networks:
       - fixyou-network
 

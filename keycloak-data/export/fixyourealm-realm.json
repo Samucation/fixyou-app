@@ -176,7 +176,7 @@
         "composite" : true,
         "composites" : {
           "client" : {
-            "realm-management" : [ "manage-events", "query-users", "manage-clients", "query-clients", "view-authorization", "create-client", "view-events", "query-groups", "view-users", "manage-identity-providers", "manage-authorization", "view-realm", "manage-users", "manage-realm", "query-realms", "view-identity-providers", "impersonation", "view-clients" ]
+            "realm-management" : [ "manage-events", "query-users", "manage-clients", "query-clients", "view-authorization", "create-client", "query-groups", "view-events", "view-users", "manage-identity-providers", "manage-authorization", "manage-users", "view-realm", "manage-realm", "query-realms", "view-identity-providers", "impersonation", "view-clients" ]
           }
         },
         "clientRole" : true,
@@ -247,6 +247,14 @@
       "security-admin-console" : [ ],
       "admin-cli" : [ ],
       "fixyou-client-ext" : [ {
+        "id" : "4dfaa67d-4eec-43b9-b9c5-2de98fe72b7a",
+        "name" : "USERS_BY_PROFILE",
+        "description" : "Usuários por perfil",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "2d35753e-a652-4817-a45a-0dd9dc04f46c",
+        "attributes" : { }
+      }, {
         "id" : "ac9c38eb-2a38-457d-9ad1-a4bdb8041af1",
         "name" : "CREATE_USER",
         "description" : "Create user",
@@ -255,9 +263,49 @@
         "containerId" : "2d35753e-a652-4817-a45a-0dd9dc04f46c",
         "attributes" : { }
       }, {
+        "id" : "6d964754-ded3-4c5a-b19f-4303657704af",
+        "name" : "GET_USERS_BY_USERNAME",
+        "description" : "Busca usuário pelo nome do usuário.",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "2d35753e-a652-4817-a45a-0dd9dc04f46c",
+        "attributes" : { }
+      }, {
+        "id" : "3369d416-3bdd-4f05-acda-1c67aaff12d0",
+        "name" : "USERS_BY_UNITY",
+        "description" : "Usuários por unidade.",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "2d35753e-a652-4817-a45a-0dd9dc04f46c",
+        "attributes" : { }
+      }, {
+        "id" : "fb3edbc4-58a5-4ed0-b37d-756bfae26fcb",
+        "name" : "GET_USER_BY_ROLE",
+        "description" : "Busca o usuário por regra",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "2d35753e-a652-4817-a45a-0dd9dc04f46c",
+        "attributes" : { }
+      }, {
+        "id" : "cc8d961c-8d75-4e56-a8af-c3477f62842f",
+        "name" : "ALL_USERS_ODER_BY_USERNAME",
+        "description" : "Pega todos os usuários cadastrados e ordenados por username.",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "2d35753e-a652-4817-a45a-0dd9dc04f46c",
+        "attributes" : { }
+      }, {
         "id" : "b15c7f0a-ce2f-4fdc-8f13-c51377786cb0",
         "name" : "LIST_USERS",
         "description" : "",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "2d35753e-a652-4817-a45a-0dd9dc04f46c",
+        "attributes" : { }
+      }, {
+        "id" : "ccdb7194-0218-4942-805d-f20b13eda677",
+        "name" : "USERS_BY_DEPARTMENT",
+        "description" : "Usuários por departamento.",
         "composite" : false,
         "clientRole" : true,
         "containerId" : "2d35753e-a652-4817-a45a-0dd9dc04f46c",
@@ -350,7 +398,27 @@
       } ]
     }
   },
-  "groups" : [ ],
+  "groups" : [ {
+    "id" : "9bcf5406-06ca-4780-832e-e672b3031e60",
+    "name" : "Admins",
+    "path" : "/Admins",
+    "subGroups" : [ ],
+    "attributes" : { },
+    "realmRoles" : [ ],
+    "clientRoles" : {
+      "fixyou-client-ext" : [ "USERS_BY_PROFILE", "CREATE_USER", "USERS_BY_UNITY", "GET_USERS_BY_USERNAME", "GET_USER_BY_ROLE", "ALL_USERS_ODER_BY_USERNAME", "LIST_USERS", "USERS_BY_DEPARTMENT" ]
+    }
+  }, {
+    "id" : "de874fdf-7256-405a-8d92-ed2afb11f57f",
+    "name" : "Users",
+    "path" : "/Users",
+    "subGroups" : [ ],
+    "attributes" : { },
+    "realmRoles" : [ ],
+    "clientRoles" : {
+      "fixyou-client-ext" : [ "GET_USERS_BY_USERNAME" ]
+    }
+  } ],
   "defaultRole" : {
     "id" : "7fcad10b-5135-42c7-bb1e-38012237accc",
     "name" : "default-roles-fixyourealm",
@@ -391,6 +459,73 @@
   "webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister" : false,
   "webAuthnPolicyPasswordlessAcceptableAaguids" : [ ],
   "webAuthnPolicyPasswordlessExtraOrigins" : [ ],
+  "users" : [ {
+    "id" : "aeed27fc-1ec0-4536-b6ea-b2f5d9417b62",
+    "createdTimestamp" : 1747855828277,
+    "username" : "admfixyou",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "firstName" : "adm",
+    "lastName" : "fixyou",
+    "email" : "admfixyou@gmail.com",
+    "credentials" : [ {
+      "id" : "ae24195a-da96-46a3-bc0e-5ac0c3664c95",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1747855843906,
+      "secretData" : "{\"value\":\"OrLURguVgv5uCYZZ8G72mU/yzIvt+JO04WlJTFCsL4w=\",\"salt\":\"LB/M8x4gdD/VYfSN790p+g==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-fixyourealm" ],
+    "clientRoles" : {
+      "fixyou-client-ext" : [ "CREATE_USER", "LIST_USERS" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ "/Admins" ]
+  }, {
+    "id" : "e1e8a9ce-fe00-4c6d-9772-4fb6709b46fe",
+    "createdTimestamp" : 1747855720010,
+    "username" : "service-account-fixyou-client-ext",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : false,
+    "serviceAccountClientId" : "fixyou-client-ext",
+    "credentials" : [ ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-fixyourealm" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "dcae3918-3446-4f89-9db3-e35dd7d55dff",
+    "createdTimestamp" : 1747855890344,
+    "username" : "userfixyou",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "firstName" : "user",
+    "lastName" : "fixyou",
+    "email" : "userfixyou@gmail.com",
+    "credentials" : [ {
+      "id" : "daab099a-1a7b-4f0b-a054-baf971db1e42",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1747855904548,
+      "secretData" : "{\"value\":\"t4AnSfx9w3OXsD2c+PQgZRVdaJJH3MZ1yNgb/N3C1Pg=\",\"salt\":\"/15jEY6PVy1Yrpdif9DkWA==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-fixyourealm" ],
+    "clientRoles" : {
+      "fixyou-client-ext" : [ "LIST_USERS" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ "/Users" ]
+  } ],
   "scopeMappings" : [ {
     "clientScope" : "offline_access",
     "roles" : [ "offline_access" ]
@@ -490,7 +625,9 @@
     "publicClient" : true,
     "frontchannelLogout" : false,
     "protocol" : "openid-connect",
-    "attributes" : { },
+    "attributes" : {
+      "post.logout.redirect.uris" : "+"
+    },
     "authenticationFlowBindingOverrides" : { },
     "fullScopeAllowed" : false,
     "nodeReRegistrationTimeout" : 0,
@@ -516,7 +653,9 @@
     "publicClient" : false,
     "frontchannelLogout" : false,
     "protocol" : "openid-connect",
-    "attributes" : { },
+    "attributes" : {
+      "post.logout.redirect.uris" : "+"
+    },
     "authenticationFlowBindingOverrides" : { },
     "fullScopeAllowed" : false,
     "nodeReRegistrationTimeout" : 0,
@@ -549,9 +688,10 @@
     "protocol" : "openid-connect",
     "attributes" : {
       "oidc.ciba.grant.enabled" : "false",
-      "oauth2.device.authorization.grant.enabled" : "true",
       "client.secret.creation.time" : "1747855720",
       "backchannel.logout.session.required" : "true",
+      "post.logout.redirect.uris" : "+",
+      "oauth2.device.authorization.grant.enabled" : "true",
       "backchannel.logout.revoke.offline.tokens" : "false"
     },
     "authenticationFlowBindingOverrides" : { },
@@ -566,6 +706,7 @@
       "config" : {
         "user.session.note" : "clientHost",
         "introspection.token.claim" : "true",
+        "userinfo.token.claim" : "true",
         "id.token.claim" : "true",
         "access.token.claim" : "true",
         "claim.name" : "clientHost",
@@ -580,6 +721,7 @@
       "config" : {
         "user.session.note" : "clientAddress",
         "introspection.token.claim" : "true",
+        "userinfo.token.claim" : "true",
         "id.token.claim" : "true",
         "access.token.claim" : "true",
         "claim.name" : "clientAddress",
@@ -594,6 +736,7 @@
       "config" : {
         "user.session.note" : "client_id",
         "introspection.token.claim" : "true",
+        "userinfo.token.claim" : "true",
         "id.token.claim" : "true",
         "access.token.claim" : "true",
         "claim.name" : "client_id",
@@ -622,7 +765,9 @@
     "publicClient" : false,
     "frontchannelLogout" : false,
     "protocol" : "openid-connect",
-    "attributes" : { },
+    "attributes" : {
+      "post.logout.redirect.uris" : "+"
+    },
     "authenticationFlowBindingOverrides" : { },
     "fullScopeAllowed" : false,
     "nodeReRegistrationTimeout" : 0,
@@ -1015,6 +1160,7 @@
       "config" : {
         "introspection.token.claim" : "true",
         "multivalued" : "true",
+        "userinfo.token.claim" : "true",
         "user.attribute" : "foo",
         "id.token.claim" : "true",
         "access.token.claim" : "true",
@@ -1163,7 +1309,8 @@
       "config" : {
         "id.token.claim" : "true",
         "introspection.token.claim" : "true",
-        "access.token.claim" : "true"
+        "access.token.claim" : "true",
+        "userinfo.token.claim" : "true"
       }
     } ]
   } ],
@@ -1202,7 +1349,7 @@
       "subType" : "anonymous",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "oidc-address-mapper", "saml-user-property-mapper", "oidc-usermodel-property-mapper", "oidc-full-name-mapper", "oidc-sha256-pairwise-sub-mapper", "saml-user-attribute-mapper", "oidc-usermodel-attribute-mapper", "saml-role-list-mapper" ]
+        "allowed-protocol-mapper-types" : [ "oidc-full-name-mapper", "oidc-usermodel-property-mapper", "saml-user-property-mapper", "saml-user-attribute-mapper", "oidc-address-mapper", "saml-role-list-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-usermodel-attribute-mapper" ]
       }
     }, {
       "id" : "30aee1d6-5815-47fd-8536-60448077ac88",
@@ -1227,7 +1374,7 @@
       "subType" : "authenticated",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "saml-user-attribute-mapper", "saml-user-property-mapper", "oidc-full-name-mapper", "saml-role-list-mapper", "oidc-address-mapper", "oidc-usermodel-attribute-mapper", "oidc-usermodel-property-mapper", "oidc-sha256-pairwise-sub-mapper" ]
+        "allowed-protocol-mapper-types" : [ "saml-user-attribute-mapper", "saml-role-list-mapper", "oidc-usermodel-attribute-mapper", "saml-user-property-mapper", "oidc-usermodel-property-mapper", "oidc-address-mapper", "oidc-full-name-mapper", "oidc-sha256-pairwise-sub-mapper" ]
       }
     }, {
       "id" : "2b99408a-d6d4-4417-bec7-ebd97353029e",
@@ -1838,8 +1985,12 @@
     "cibaExpiresIn" : "120",
     "cibaAuthRequestedUserHint" : "login_hint",
     "oauth2DeviceCodeLifespan" : "600",
+    "clientOfflineSessionMaxLifespan" : "0",
     "oauth2DevicePollingInterval" : "5",
+    "clientSessionIdleTimeout" : "0",
     "parRequestUriLifespan" : "60",
+    "clientSessionMaxLifespan" : "0",
+    "clientOfflineSessionIdleTimeout" : "0",
     "cibaInterval" : "5",
     "realmReusableOtpCode" : "false"
   },

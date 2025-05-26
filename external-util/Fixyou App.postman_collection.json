@@ -1,0 +1,80 @@
+{
+	"info": {
+		"_postman_id": "47a4fba7-69a2-4006-850a-9e47a031756e",
+		"name": "Fixyou App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24218402"
+	},
+	"item": [
+		{
+			"name": "GET TOKEN SESSION KEYCLOAK",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "fixyou-client-ext",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "qIONV6e1V7uCqjO3dwIq7O73fr2hU4z5",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "userfixyou",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123Mudar",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid offline_access profile",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://192.168.15.9:8080/realms/fixyourealm/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"15",
+						"9"
+					],
+					"port": "8080",
+					"path": [
+						"realms",
+						"fixyourealm",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
