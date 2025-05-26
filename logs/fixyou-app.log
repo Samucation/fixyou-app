@@ -396,3 +396,11 @@
 2025-05-26T18:09:11.256 INFO Starting FixYouApplication using Java 21.0.2 with PID 27420 (F:\Exosoft\Workspace\fixyou-app\target\classes started by PC in F:\Exosoft\Workspace\fixyou-app)
 2025-05-26T18:09:11.258 INFO No active profile set, falling back to 1 default profile: "default"
 2025-05-26T18:09:15.091 INFO Started FixYouApplication in 4.028 seconds (process running for 4.481)
+2025-05-26T18:41:18.395 INFO Carregando variáveis de ambiente do arquivo .env para ambiente local.
+2025-05-26T18:41:18.411 INFO Environments loaded do .env: JDBC_DATABASE_URL: [jdbc:postgresql://localhost:5432/m33_db], JDBC_DATABASE_USERNAME: [postgres], KEYCLOAK_ISSUER_URI: [http://192.168.15.9:8080/realms/fixyourealm], CORS_ALLOWED_LIST: [http://localhost:8081,http://localhost:8083,http://localhost:4200]
+2025-05-26T18:41:18.671 INFO Starting FixYouApplication using Java 21.0.2 with PID 20308 (F:\Exosoft\Workspace\fixyou-app\target\classes started by PC in F:\Exosoft\Workspace\fixyou-app)
+2025-05-26T18:41:18.673 INFO No active profile set, falling back to 1 default profile: "default"
+2025-05-26T18:41:22.860 INFO Started FixYouApplication in 4.401 seconds (process running for 4.9)
+2025-05-26T18:41:38.542 INFO Client value: [null]
+2025-05-26T18:48:20.707 INFO Client value: [null]
+2025-05-26T18:48:34.724 INFO Client value: [null]
