@@ -23,21 +23,7 @@ public class FixYouApplication {
 		SpringApplication.run(FixYouApplication.class, args);
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-						.allowedOrigins("http://localhost:4200", "http://localhost:8080/swagger-ui/index.html")
-						.allowedMethods("GET", "POST", "PUT", "DELETE");
-//						.allowedHeaders("Origin", "Content-Type", "Accept", "Authorization")
-//						.allowCredentials(true);
-			}
-		};
-	}
-
-	private static void loadEnvironmentsConfigurations(){
+	private static void loadEnvironmentsConfigurations() {
 		String environmentType = System.getenv("APPLICATION_ENVIRONMENT");
 
 		if ("local".equalsIgnoreCase(environmentType)) {
@@ -46,9 +32,15 @@ public class FixYouApplication {
 			String envPath = System.getenv("ENV_PATH");
 			String envFile = System.getenv("ENV_FILE");
 
+			// Corrige a extensão para não duplicar .env
+			String fileName = envFile != null && envFile.endsWith(".env") ? envFile : envFile + ".env";
+
+			LOGGER.info("Verificando ENV_PATH: {}", envPath);
+			LOGGER.info("Verificando ENV_FILE: {}", envFile);
+
 			Dotenv dotenv = Dotenv.configure()
 					.directory(envPath)
-					.filename(envFile + ".env")
+					.filename(fileName)
 					.load();
 
 			// Infra
@@ -79,6 +71,7 @@ public class FixYouApplication {
 			System.setProperty("SECURITY_LOG_LEVEL", dotenv.get("SECURITY_LOG_LEVEL", "DEBUG"));
 			System.setProperty("WEB_LOG_LEVEL", dotenv.get("WEB_LOG_LEVEL", "DEBUG"));
 
+			// Segurança
 			System.setProperty("SPRINT_SECURITY_BASIC", dotenv.get("SPRINT_SECURITY_BASIC"));
 
 			// Flyway
@@ -122,7 +115,7 @@ public class FixYouApplication {
 			System.setProperty("SECURITY_LOG_LEVEL", System.getenv("SECURITY_LOG_LEVEL"));
 			System.setProperty("WEB_LOG_LEVEL", System.getenv("WEB_LOG_LEVEL"));
 
-			// Flyway
+			// Flyway e Segurança
 			System.setProperty("FLYWAY_CLEAN_DISABLED", System.getenv("FLYWAY_CLEAN_DISABLED"));
 			System.setProperty("SPRINT_SECURITY_BASIC", System.getenv("SPRINT_SECURITY_BASIC"));
 

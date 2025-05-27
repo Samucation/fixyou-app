@@ -72,7 +72,11 @@ env/local-NOMEDAMAQUINA.env
 
 Após rodar o setup, execute:
 
-```powershell
+```powershell create network of project
+ docker network create fixyou-network
+ ```
+
+```powershell create project images
 docker-compose up --build
 ```
 

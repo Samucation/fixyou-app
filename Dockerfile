@@ -42,7 +42,7 @@ COPY env /app/env
 
 # Defina o arquivo de configuraÃ§Ã£o das variÃ¡veis de ambiente
 ENV APPLICATION_ENVIRONMENT=local
-ENV ENV_FILE=docker-NBQFC-3S0L1M3.env
+ENV ENV_FILE=docker-DESKTOP-HAIIK4K
 ENV ENV_PATH=/app/env
 
 # Adiciona variÃ¡veis de ambiente do Keycloak
