@@ -17,6 +17,22 @@ public class Profile {
     private String department;
     private String preferredShift;
     private String jobTitle;
+    private String cpf;
+    private String cnpj;
+    private String rg;
+    private String cnh;
+
+    public Profile(Long id, String unit, String department, String preferredShift, String jobTitle, String cpf, String cnpj, String rg, String cnh) {
+        this.id = id;
+        this.unit = unit;
+        this.department = department;
+        this.preferredShift = preferredShift;
+        this.jobTitle = jobTitle;
+        this.cpf = cpf;
+        this.cnpj = cnpj;
+        this.rg = rg;
+        this.cnh = cnh;
+    }
 
     public Profile(Long id, String unit, String department, String preferredShift, String jobTitle) {
         this.id = id;
@@ -81,6 +97,38 @@ public class Profile {
         return Objects.hashCode(id);
     }
 
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public String getRg() {
+        return rg;
+    }
+
+    public void setRg(String rg) {
+        this.rg = rg;
+    }
+
+    public String getCnh() {
+        return cnh;
+    }
+
+    public void setCnh(String cnh) {
+        this.cnh = cnh;
+    }
+
     @Override
     public String toString() {
         return "Profile{" +
@@ -89,6 +137,10 @@ public class Profile {
                 ", department='" + department + '\'' +
                 ", preferredShift='" + preferredShift + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", cnpj='" + cnpj + '\'' +
+                ", rg='" + rg + '\'' +
+                ", cnh='" + cnh + '\'' +
                 '}';
     }
 }
