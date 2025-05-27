@@ -24,7 +24,7 @@ services:
       KC_DB_URL: jdbc:postgresql://postgres:5432/m33_db
       KC_DB_USERNAME: postgres
       KC_DB_PASSWORD: F7@uM!dQ#2kLpZxT$9eV
-      KC_HOSTNAME: 192.168.1.16
+      KC_HOSTNAME: <local-ip>
       KC_HOSTNAME_STRICT: false
     ports:
       - "8080:8080"
@@ -48,9 +48,9 @@ services:
       JDBC_DATABASE_URL: jdbc:postgresql://postgres:5432/m33_db
       JDBC_DATABASE_USERNAME: postgres
       JDBC_DATABASE_PASSWORD: F7@uM!dQ#2kLpZxT$9eV
-      ENV_FILE: docker-NBQFC-3S0L1M3.env
+      ENV_FILE: <docker-env-file>
       ENV_PATH: /app/env
-      KEYCLOAK_URL: http://192.168.1.16:8080/
+      KEYCLOAK_URL: http://<local-ip>:8080/
       KEYCLOAK_REALM: fixyou-realm
       FLYWAY_DEFAULT_SCHEMA: fixyou
       FLYWAY_SCHEMAS: fixyou
@@ -60,4 +60,3 @@ services:
 networks:
   fixyou-network:
     external: true
-
