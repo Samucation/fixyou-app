@@ -4,7 +4,10 @@ HELP.md
 target/
 */target/
 
-# Exceto o JAR do registrations (permite qualquer versão)
+# Permitir a pasta registrations/target
+!registrations/target/
+
+# Permitir qualquer JAR do registrations (qualquer versão)
 !registrations/target/registrations-*.jar
 
 # Continua ignorando qualquer outro arquivo dentro de target de registrations
