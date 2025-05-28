@@ -53,4 +53,4 @@ build/
 !registrations/env/local.env
 
 # Ignorar logs da aplicação registrations
-registrations/logs/
+registrations/logs/*
