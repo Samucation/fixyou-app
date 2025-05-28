@@ -1,5 +1,11 @@
 HELP.md
+
+# Ignorar tudo na pasta target
 target/
+# Mas permitir qualquer registrations-*.jar na raiz do target
+!target/registrations-*.jar
+
+# Permitir também arquivos dentro de subdiretórios src com target (se necessário)
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -32,7 +38,10 @@ build/
 ### VS Code ###
 .vscode/
 
+# Ignorar arquivos de ambiente, exceto esses específicos
 /env/*
 !/env/docker.env
 !/env/local.env
+
+# Ignorar logs da aplicação registrations
 registrations/logs/

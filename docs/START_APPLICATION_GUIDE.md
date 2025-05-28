@@ -74,7 +74,11 @@ Após rodar o setup, execute:
 
 ```powershell create network of project
  docker network create fixyou-network
- ```
+````
+
+```create new target project
+  mvn clean install -DskipTests
+````
 
 ```powershell create project images
 docker-compose up --build
