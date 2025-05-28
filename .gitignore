@@ -1,9 +1,15 @@
 HELP.md
 
-# Ignorar tudo na pasta target
+# Ignorar todas as pastas target
 target/
-# Mas permitir qualquer registrations-*.jar na raiz do target
-!target/registrations-*.jar
+*/target/
+
+# Exceto o JAR do registrations (permite qualquer versão)
+!registrations/target/registrations-*.jar
+
+# Continua ignorando qualquer outro arquivo dentro de target de registrations
+registrations/target/*
+!registrations/target/registrations-*.jar
 
 # Permitir também arquivos dentro de subdiretórios src com target (se necessário)
 !.mvn/wrapper/maven-wrapper.jar
@@ -40,8 +46,8 @@ build/
 
 # Ignorar arquivos de ambiente, exceto esses específicos
 /env/*
-!/env/docker.env
-!/env/local.env
+!registrations/env/docker.env
+!registrations/env/local.env
 
 # Ignorar logs da aplicação registrations
 registrations/logs/
