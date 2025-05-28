@@ -37,11 +37,11 @@ if ($replace -match "^(Y|y|S|s)$") {
 
     Write-Host "Substituindo <local-ip> nos arquivos docker.env e local.env..."
 
-    # Verificar e criar pasta env
-    $envFolder = Join-Path $scriptDir "env"
+    # Verificar e criar pasta env dentro de registrations
+    $envFolder = Join-Path $scriptDir "registrations\env"
     if (!(Test-Path -Path $envFolder)) {
         New-Item -ItemType Directory -Path $envFolder | Out-Null
-        Write-Host "Criada pasta ./env"
+        Write-Host "Criada pasta registrations/env"
     }
 
     # Nome dos arquivos sem extensão no Dockerfile e no Compose
@@ -80,6 +80,8 @@ if ($replace -match "^(Y|y|S|s)$") {
     $dockerfileLines = $dockerfileLines | ForEach-Object {
         if ($_ -match '^ENV ENV_FILE=' -or $_ -match '^ENV ENV_FILE=<docker-env-file>') {
             "ENV ENV_FILE=$dockerFileName"
+        } elseif ($_ -match '^ENV ENV_PATH=') {
+            "ENV ENV_PATH=/app/env"
         } else {
             $_
         }

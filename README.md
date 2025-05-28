@@ -1,6 +1,6 @@
 # 📘 Manual de Integração da Aplicção FixYou
 
-## 🏢 Empresa: M3 Consultoria
+## 🏢 Empresa: M3Group
 
 ## 📚 Documentação Principal
 
@@ -18,5 +18,7 @@
 - Swagger API via Docker: [http://localhost:8082/swagger-ui/index.html](http://localhost:8082/swagger-ui/index.html)
 - Swagger API via IntelliJ (modo DEV): [http://localhost:8083/swagger-ui/index.html](http://localhost:8083/swagger-ui/index.html)
 - Keycloak: [http://localhost:8080](http://localhost:8080)
+- Keycloak User: admin
+- Keycloak Pass: admin
 
-Feito com 💙 pela M3 Consultoria para o projeto FixYou.
+Feito com 💙 pela FCamara em parceria com a M3Group projeto FixYou.

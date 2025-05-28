@@ -35,4 +35,4 @@ build/
 /env/*
 !/env/docker.env
 !/env/local.env
-logs/
+registrations/logs/
