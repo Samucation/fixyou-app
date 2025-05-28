@@ -92,6 +92,21 @@ if ($replace -match "^(Y|y|S|s)$") {
     Write-Host "Pulando substituição dos IPs e geração dos arquivos."
 }
 
+# Verificar e criar a network 'fixyou-network' se não existir
+Write-Host ""
+Write-Host "Verificando se a rede Docker 'fixyou-network' existe..."
+
+$networkExists = docker network ls --format '{{.Name}}' | Where-Object { $_ -eq 'fixyou-network' }
+
+if (-not $networkExists) {
+    Write-Host "Rede 'fixyou-network' não existe. Criando..."
+    docker network create fixyou-network | Out-Null
+    Write-Host "Rede 'fixyou-network' criada com sucesso."
+} else {
+    Write-Host "Rede 'fixyou-network' já existe. Nenhuma ação necessária."
+}
+
+
 Write-Host "==========================================="
 Write-Host "SETUP FINALIZADO COM SUCESSO"
 Write-Host "==========================================="

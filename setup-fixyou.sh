@@ -85,6 +85,17 @@ else
     echo "Pulando substituição dos IPs e geração dos arquivos."
 fi
 
+# Verificar e criar a network 'fixyou-network' se não existir
+echo ""
+echo "Verificando se a rede Docker 'fixyou-network' existe..."
+if ! docker network ls --format '{{.Name}}' | grep -q '^fixyou-network$'; then
+  echo "Rede 'fixyou-network' não existe. Criando..."
+  docker network create fixyou-network > /dev/null
+  echo "Rede 'fixyou-network' criada com sucesso."
+else
+  echo "Rede 'fixyou-network' já existe. Nenhuma ação necessária."
+fi
+
 echo "==========================================="
 echo "SETUP FINALIZADO COM SUCESSO"
 echo "==========================================="

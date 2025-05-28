@@ -1,9 +1,9 @@
-CREATE TABLE fixyou.tb_roles (
+CREATE TABLE IF NOT EXISTS fixyou.tb_roles (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL
 );
 
-CREATE TABLE fixyou.tb_profile (
+CREATE TABLE IF NOT EXISTS fixyou.tb_profile (
     id SERIAL PRIMARY KEY,
     preferred_shift VARCHAR(50),
     job_title VARCHAR(100),
@@ -11,7 +11,7 @@ CREATE TABLE fixyou.tb_profile (
     FOREIGN KEY (branch_id) REFERENCES fixyou.tb_branch(id)
 );
 
-CREATE TABLE fixyou.tb_profile_departments (
+CREATE TABLE IF NOT EXISTS fixyou.tb_profile_departments (
     profile_id INT NOT NULL,
     department_id INT NOT NULL,
     PRIMARY KEY (profile_id, department_id),
@@ -19,7 +19,7 @@ CREATE TABLE fixyou.tb_profile_departments (
     FOREIGN KEY (department_id) REFERENCES fixyou.tb_department(id) ON DELETE CASCADE
 );
 
-CREATE TABLE fixyou.tb_person_data (
+CREATE TABLE IF NOT EXISTS fixyou.tb_person_data (
     id SERIAL PRIMARY KEY,
     contract_type VARCHAR(50) NOT NULL,
     cpf VARCHAR(14),
@@ -30,7 +30,7 @@ CREATE TABLE fixyou.tb_person_data (
     FOREIGN KEY (profile_id) REFERENCES fixyou.tb_profile(id) ON DELETE CASCADE
 );
 
-CREATE TABLE fixyou.tb_users (
+CREATE TABLE IF NOT EXISTS fixyou.tb_users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
     keycloak_id VARCHAR(255) NOT NULL UNIQUE,
@@ -38,7 +38,7 @@ CREATE TABLE fixyou.tb_users (
     FOREIGN KEY (profile_id) REFERENCES fixyou.tb_profile(id) ON DELETE CASCADE
 );
 
-CREATE TABLE fixyou.tb_user_roles (
+CREATE TABLE IF NOT EXISTS fixyou.tb_user_roles (
     user_id INT NOT NULL,
     role_id INT NOT NULL,
     PRIMARY KEY (user_id, role_id),
