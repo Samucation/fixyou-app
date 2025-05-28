@@ -1,4 +1,4 @@
-# 📘 Manual de Integração da Aplicção FixYou
+# 📘 Manual de Integração da Aplicação FixYou
 
 ## 🏢 Empresa: M3Group
 
