@@ -48,7 +48,7 @@ build/
 .vscode/
 
 # Ignorar arquivos de ambiente, exceto esses específicos
-/env/*
+/application-env/*
 !registrations/env/docker.env
 !registrations/env/local.env
 

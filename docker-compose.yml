@@ -3,19 +3,19 @@
 services:
   postgres:
     image: postgres:15
-    container_name: fixyou-postgres
+    container_name: "${DOCKER_POSTGRES_CONTAINER_NAME}"
     env_file:
       - .env
     environment:
-      POSTGRES_DB: m33_db
-      POSTGRES_USER: postgres
+      POSTGRES_DB: "${DOCKER_POSTGRES_DB_NAME}"
+      POSTGRES_USER: "${JDBC_DATABASE_USERNAME}"
       POSTGRES_PASSWORD: "${JDBC_DATABASE_PASSWORD}"
     volumes:
       - fixyou-pgdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "${DOCKER_POSTGRES_EXTERNAL_PORT}:5432"
     networks:
-      - fixyou-network
+      - "${DOCKER_NETWORK}"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -23,30 +23,30 @@ services:
       retries: 5
 
   keycloak:
-    image: samucation/keycloak:latest
-    container_name: keycloak
+    image: "${KEYCLOAK_IMAGE}"
+    container_name: "${KEYCLOAK_CONTAINER_NAME}"
     command: ["start-dev", "--import-realm"]
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres:5432/m33_db
-      KC_DB_USERNAME: postgres
+      KEYCLOAK_ADMIN: "${KEYCLOAK_ADMIN_USER}"
+      KEYCLOAK_ADMIN_PASSWORD: "${KEYCLOAK_ADMIN_PASS}"
+      KC_DB: "${KEYCLOAK_SCHEMA}"
+      KC_DB_URL: "${KEYCLOAK_DB_URL}"
+      KC_DB_USERNAME: "${KEYCLOAK_DB_USERNAME}"
       KC_DB_PASSWORD: "${JDBC_DATABASE_PASSWORD}"
-      KC_HOSTNAME: 192.168.15.25
-      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME: "${KEYCLOAK_HOST_NAME}"
+      KC_HOSTNAME_STRICT: "${KEYCLOAK_RESTRICT}"
     ports:
-      - "8080:8080"
+      - "${KEYCLOAK_DOCKER_EXTERNAL_PORT}:8080"
     depends_on:
       - postgres
     volumes:
-      - ./keycloak-data:/opt/keycloak/data
+      - ./application-docs/keycloak-data:/opt/keycloak/data
     networks:
-      - fixyou-network
+      - "${DOCKER_NETWORK}"
 
   flyway:
     image: flyway/flyway:10
-    container_name: flyway
+    container_name: "${DOCKER_FLYWAY_CONTAINER_NAME}"
     depends_on:
       postgres:
         condition: service_healthy
@@ -55,21 +55,20 @@ services:
       -url=jdbc:postgresql://postgres:5432/m33_db
       -user=postgres
       -password=${JDBC_DATABASE_PASSWORD}
-      -schemas=fixyou
+      -schemas=${DOCKER_FLYWAY_SCHEMA}
       migrate
     volumes:
       - ./registrations/src/main/resources/db/migration:/flyway/sql
     networks:
-      - fixyou-network
+      - "${DOCKER_NETWORK}"
 
-
-  fixyou_app:
+  api_fixyou:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: fixyou-app
+    container_name: "${API_FIXYOU_CONTAINER_NAME}"
     ports:
-      - "8082:8080"
+      - "${DOCKER_EXTERNAL_APP_PORT}:8080"
     depends_on:
       postgres:
         condition: service_healthy
@@ -83,7 +82,7 @@ services:
     volumes:
       - ./.env:/app/env/.env
     networks:
-      - fixyou-network
+      - "${DOCKER_NETWORK}"
 
 volumes:
   fixyou-pgdata:

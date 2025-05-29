@@ -4,14 +4,14 @@
 
 ## 📚 Documentação Principal
 
-- 🚀 [Guia de Inicialização da Aplicação](docs/START_APPLICATION_GUIDE.md)
-- 🐳 [Rodando Totalmente com Docker](docs/DOCKER_SETUP_GUIDE.md)
-- 💻 [Rodando em Ambiente Local (IntelliJ + Docker Keycloak/DB)](docs/LOCAL_DEV_SETUP_GUIDE.md)
-- 🔐 [Configurando o Keycloak Manualmente](docs/KEYCLOAK_CONFIGURATION_GUIDE.md)
-- 🔑 [Gerando Token no Keycloak](docs/KEYCLOAK_TOKEN_RETRIEVAL_GUIDE.md)
-- 🛠️ [Soluções de Problemas Frequentes](docs/TROUBLESHOOTING_GUIDE.md)
-- ⚙️ [Configuração de Arquivos ENV, Dockerfile e Compose](docs/ENVIRONMENT_CONFIGURATION_GUIDE.md)
-- 💡 [Dicas de Desenvolvimento e Comandos Importantes](docs/DICAS_DESENVOLVIMENTO_COMANDOS.md)
+- 🚀 [Guia de Inicialização da Aplicação](application-docs/START_APPLICATION_GUIDE.md)
+- 🐳 [Rodando Totalmente com Docker](application-docs/DOCKER_SETUP_GUIDE.md)
+- 💻 [Rodando em Ambiente Local (IntelliJ + Docker Keycloak/DB)](application-docs/LOCAL_DEV_SETUP_GUIDE.md)
+- 🔐 [Configurando o Keycloak Manualmente](application-docs/KEYCLOAK_CONFIGURATION_GUIDE.md)
+- 🔑 [Gerando Token no Keycloak](application-docs/KEYCLOAK_TOKEN_RETRIEVAL_GUIDE.md)
+- 🛠️ [Soluções de Problemas Frequentes](application-docs/TROUBLESHOOTING_GUIDE.md)
+- ⚙️ [Configuração de Arquivos ENV, Dockerfile e Compose](application-docs/ENVIRONMENT_CONFIGURATION_GUIDE.md)
+- 💡 [Dicas de Desenvolvimento e Comandos Importantes](application-docs/DICAS_DESENVOLVIMENTO_COMANDOS.md)
 
 ## 🔗 Acesso rápido
 
