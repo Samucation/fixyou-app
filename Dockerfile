@@ -1,61 +1,55 @@
-﻿# Use a imagem base com OpenJDK 21
-FROM openjdk:21-jdk-slim
+﻿FROM openjdk:21-jdk-slim
 
-# Defina as variÃ¡veis de ambiente MAVEN_HOME e M2_HOME
 ENV MAVEN_VERSION=3.9.1 \
     MAVEN_HOME=/opt/maven \
     M2_HOME=/opt/maven \
     FLYWAY_VERSION=9.16.0 \
     FLYWAY_HOME=/opt/flyway
 
-# Instale o Maven, Flyway CLI e outras dependÃªncias necessÃ¡rias
+# Instala Maven, Flyway e dependências necessárias
 RUN apt-get update && \
     apt-get install -y wget libfreetype6 libfontconfig1 && \
-    # Instalar Maven
-    wget -O apache-maven-$MAVEN_VERSION-bin.tar.gz https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz && \
-    tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz -C /opt && \
-    mv /opt/apache-maven-$MAVEN_VERSION /opt/maven && \
-    ln -s /opt/maven/bin/mvn /usr/bin/mvn && \
-    rm apache-maven-$MAVEN_VERSION-bin.tar.gz && \
-    # Instalar Flyway CLI
-    wget -O flyway-commandline-$FLYWAY_VERSION-linux-x64.tar.gz https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/$FLYWAY_VERSION/flyway-commandline-$FLYWAY_VERSION-linux-x64.tar.gz && \
-    tar -xzf flyway-commandline-$FLYWAY_VERSION-linux-x64.tar.gz -C /opt && \
-    mv /opt/flyway-$FLYWAY_VERSION $FLYWAY_HOME && \
-    ln -s $FLYWAY_HOME/flyway /usr/local/bin/flyway && \
-    rm flyway-commandline-$FLYWAY_VERSION-linux-x64.tar.gz
+    # Instala Maven
+    wget -O apache-maven.tar.gz https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz && \
+    tar -xzf apache-maven.tar.gz -C /opt && \
+    mv /opt/apache-maven-${MAVEN_VERSION} ${MAVEN_HOME} && \
+    ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn && \
+    rm apache-maven.tar.gz && \
+    # Instala Flyway
+    wget -O flyway.tar.gz https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/${FLYWAY_VERSION}/flyway-commandline-${FLYWAY_VERSION}-linux-x64.tar.gz && \
+    tar -xzf flyway.tar.gz -C /opt && \
+    mv /opt/flyway-${FLYWAY_VERSION} ${FLYWAY_HOME} && \
+    ln -s ${FLYWAY_HOME}/flyway /usr/local/bin/flyway && \
+    rm flyway.tar.gz && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Defina o diretÃ³rio de trabalho
+# Define diretório da aplicação
 WORKDIR /app
 
-# Copie o arquivo pom.xml e o diretÃ³rio src para o contÃªiner
+# Copia arquivos necessários para o build
 COPY pom.xml .
-COPY src ./src
+COPY core /app/core
+COPY registrations /app/registrations
+COPY scales /app/scales
 
-# Execute o Maven para construir a aplicaÃ§Ã£o
+# Compila o projeto e ignora os testes
 RUN mvn clean install -U -DskipTests
 
-# Copie o arquivo WAR gerado para o diretÃ³rio apropriado
-COPY target/fixyou-app-0.0.1-SNAPSHOT.war /app/fixyou-app-0.0.1-SNAPSHOT.war
+# Copia o JAR gerado para a raiz
+COPY registrations/target/registrations-1.0.0.jar /app/registrations.jar
 
-# Copie o diretÃ³rio env para o contÃªiner
-COPY env /app/env
+# Copia o .env para o local esperado
+RUN mkdir -p /app/env
+COPY .env /app/env/.env
 
-# Defina o arquivo de configuraÃ§Ã£o das variÃ¡veis de ambiente
-ENV APPLICATION_ENVIRONMENT=local
-ENV ENV_FILE=docker-NBQFC-3S0L1M3
-ENV ENV_PATH=/app/env
+# Define variáveis de ambiente padrão (pode ser sobrescrito no compose)
+ENV APPLICATION_ENVIRONMENT=local \
+    ENV_FILE=.env \
+    ENV_PATH=/app/env \
+    KEYCLOAK_URL=http://keycloak:8080 \
+    KEYCLOAK_REALM=fixyourealm
 
-# Adiciona variÃ¡veis de ambiente do Keycloak
-ENV KEYCLOAK_URL=http://keycloak:8080
-ENV KEYCLOAK_REALM=fixyourealm
+EXPOSE 8080 8081 8082 8083 5005
 
-# Exponha as portas para o aplicativo e para a depuraÃ§Ã£o
-EXPOSE 8080
-EXPOSE 8081
-EXPOSE 8082
-EXPOSE 8083
-EXPOSE 5005
-
-# Comando para iniciar a aplicaÃ§Ã£o Spring Boot
-CMD ["java", "-jar", "/app/fixyou-app-0.0.1-SNAPSHOT.war"]
-
+# Comando padrão
+CMD ["java", "-jar", "/app/registrations.jar"]
