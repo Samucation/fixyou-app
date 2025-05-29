@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>com.fcamara</groupId>
+        <artifactId>api-fixyou</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>fixyou-orchestrator</artifactId>
+    <name>FixYou Orchestrator</name>
+    <description>Main Spring Boot orchestrator module for FixYou system</description>
+
+    <properties>
+        <java.version>21</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!-- Spring Boot mínimo necessário -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Dotenv para carregar variáveis do .env -->
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>dotenv-java</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+
+        <!-- Log4j2 apenas se o módulo orquestrador tiver logs próprios -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+
+        <!-- Dependências dos módulos internos (core, registrations, scales) -->
+        <dependency>
+            <groupId>com.fcamara</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fcamara</groupId>
+            <artifactId>registrations</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fcamara</groupId>
+            <artifactId>scales</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>api-fixyou</finalName>
+        <plugins>
+            <!-- Plugin Spring Boot -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>11.0.0</version>
+                <configuration>
+                    <url>${env.JDBC_DATABASE_URL}</url>
+                    <user>${env.JDBC_DATABASE_USERNAME}</user>
+                    <password>${env.JDBC_DATABASE_PASSWORD}</password>
+                    <schemas>
+                        <schema>${env.FLYWAY_DEFAULT_SCHEMA}</schema>
+                    </schemas>
+                    <locations>
+                        <location>filesystem:src/main/resources/db/migration</location>
+                    </locations>
+                    <baselineOnMigrate>true</baselineOnMigrate>
+                    <cleanDisabled>${env.FLYWAY_CLEAN_DISABLED}</cleanDisabled>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>com.fcamara.FixYouApplication</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-jar-to-root</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <copy file="${project.build.directory}/${project.build.finalName}.jar"
+                                      tofile="${project.basedir}/../api-fixyou.jar" />
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

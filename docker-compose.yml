@@ -31,7 +31,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./keycloak-data:/opt/keycloak/data
+      - ./application-docs/keycloak-data:/opt/keycloak/data
     networks:
       - "fixyou-network"
 

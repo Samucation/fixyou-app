@@ -17,7 +17,8 @@
 		<module>core</module>
 		<module>registrations</module>
 		<module>scales</module>
-	</modules>
+        <module>fixyou-orchestrator</module>
+    </modules>
 
 	<properties>
 		<java.version>21</java.version>

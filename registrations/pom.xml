@@ -160,59 +160,6 @@
 
 	</dependencies>
 
-	<build>
-		<plugins>
-			<!-- Plugin Spring Boot -->
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-
-
-			<!-- Plugin Flyway -->
-			<plugin>
-				<groupId>org.flywaydb</groupId>
-				<artifactId>flyway-maven-plugin</artifactId>
-				<version>11.0.0</version>
-				<configuration>
-					<url>${env.JDBC_DATABASE_URL}</url>
-					<user>${env.JDBC_DATABASE_USERNAME}</user>
-					<password>${env.JDBC_DATABASE_PASSWORD}</password>
-					<schemas>
-						<schema>${env.FLYWAY_DEFAULT_SCHEMA}</schema>
-					</schemas>
-					<locations>
-						<location>filesystem:src/main/resources/db/migration</location>
-					</locations>
-					<baselineOnMigrate>true</baselineOnMigrate>
-					<cleanDisabled>${env.FLYWAY_CLEAN_DISABLED}</cleanDisabled>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.0</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<mainClass>com.fcamara.FixYouApplication</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-
-		</plugins>
-	</build>
 
 
 </project>
