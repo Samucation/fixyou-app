@@ -11,7 +11,7 @@ services:
     ports:
       - "${POSTGRES_PORT}:5432"
     networks:
-      - "fixyou-network"
+      - "${DOCKER_NETWORK_NAME}"
 
   keycloak:
     image: "${KEYCLOAK_IMAGE}"
@@ -33,7 +33,7 @@ services:
     volumes:
       - ./application-docs/keycloak-data:/opt/keycloak/data
     networks:
-      - "fixyou-network"
+      - "${DOCKER_NETWORK_NAME}"
 
   flyway:
     image: "${FLYWAY_IMAGE}"
@@ -50,11 +50,11 @@ services:
       -defaultSchema=${FLYWAY_DEFAULT_SCHEMA}
       migrate
     networks:
-      - "fixyou-network"
+      - "${DOCKER_NETWORK_NAME}"
 
   app:
     build: .
-    container_name: fixyou_app
+    container_name: api_fixyou
     ports:
       - "${APP_PORT}:8080"
     depends_on:
@@ -72,7 +72,7 @@ services:
       FLYWAY_DEFAULT_SCHEMA: "${FLYWAY_DEFAULT_SCHEMA}"
       FLYWAY_SCHEMAS: "${FLYWAY_SCHEMAS}"
     networks:
-      - "fixyou-network"
+      - "${DOCKER_NETWORK_NAME}"
 
 networks:
   fixyou-network:
