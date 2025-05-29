@@ -1,0 +1,79 @@
+﻿version: '3.8'
+
+services:
+  postgres:
+    image: ${POSTGRES_IMAGE}
+    container_name: postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    networks:
+      - ${DOCKER_NETWORK_NAME}
+
+  keycloak:
+    image: ${KEYCLOAK_IMAGE}
+    container_name: keycloak
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL: ${KC_DB_URL}
+      KC_DB_USERNAME: ${KC_DB_USERNAME}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+      KC_HOSTNAME: <local-ip>
+      KC_HOSTNAME_STRICT: false
+    ports:
+      - "${KEYCLOAK_PORT}:8080"
+    depends_on:
+      - postgres
+    volumes:
+      - ./keycloak-data:/opt/keycloak/data
+    networks:
+      - ${DOCKER_NETWORK_NAME}
+
+  flyway:
+    image: ${FLYWAY_IMAGE}
+    container_name: flyway
+    depends_on:
+      - postgres
+    volumes:
+      - ./registrations/src/main/resources/db/migration:/flyway/sql
+    command: >
+      -url=${FLYWAY_JDBC_URL}
+      -user=${FLYWAY_DB_USER}
+      -password=${FLYWAY_DB_PASSWORD}
+      -schemas=${FLYWAY_DEFAULT_SCHEMA}
+      -defaultSchema=${FLYWAY_DEFAULT_SCHEMA}
+      migrate
+    networks:
+      - ${DOCKER_NETWORK_NAME}
+
+  app:
+    build: .
+    container_name: fixyou_app
+    ports:
+      - "${APP_PORT}:8080"
+    depends_on:
+      - postgres
+      - keycloak
+    environment:
+      APPLICATION_ENVIRONMENT: ${APPLICATION_ENVIRONMENT}
+      JDBC_DATABASE_URL: ${JDBC_DATABASE_URL}
+      JDBC_DATABASE_USERNAME: ${JDBC_DATABASE_USERNAME}
+      JDBC_DATABASE_PASSWORD: ${JDBC_DATABASE_PASSWORD}
+      ENV_FILE: ${ENV_FILE}
+      ENV_PATH: ${ENV_PATH}
+      KEYCLOAK_URL: http://<local-ip>:8080/
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM}
+      FLYWAY_DEFAULT_SCHEMA: ${FLYWAY_DEFAULT_SCHEMA}
+      FLYWAY_SCHEMAS: ${FLYWAY_SCHEMAS}
+    networks:
+      - ${DOCKER_NETWORK_NAME}
+
+networks:
+  ${DOCKER_NETWORK_NAME}:
+    external: true

@@ -2,73 +2,78 @@
 
 services:
   postgres:
-    image: samucation/postgres-m33:latest
+    image: "${POSTGRES_IMAGE}"
     container_name: postgres
     environment:
-      POSTGRES_DB: m33_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: F7@uM!dQ#2kLpZxT$9eV
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:5432"
     networks:
-      - fixyou-network
+      - "fixyou-network"
 
   keycloak:
-    image: samucation/keycloak:latest
+    image: "${KEYCLOAK_IMAGE}"
     container_name: keycloak
     command: ["start-dev", "--import-realm"]
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_ADMIN: "${KEYCLOAK_ADMIN}"
+      KEYCLOAK_ADMIN_PASSWORD: "${KEYCLOAK_ADMIN_PASSWORD}"
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres:5432/m33_db
-      KC_DB_USERNAME: postgres
-      KC_DB_PASSWORD: F7@uM!dQ#2kLpZxT$9eV
-      KC_HOSTNAME: 192.168.1.16
+      KC_DB_URL: "${KC_DB_URL}"
+      KC_DB_USERNAME: "${KC_DB_USERNAME}"
+      KC_DB_PASSWORD: "${KC_DB_PASSWORD}"
+      KC_HOSTNAME: "${KEYCLOAK_HOSTNAME}"
       KC_HOSTNAME_STRICT: false
     ports:
-      - "8080:8080"
+      - "${KEYCLOAK_PORT}:8080"
     depends_on:
       - postgres
     volumes:
       - ./keycloak-data:/opt/keycloak/data
     networks:
-      - fixyou-network
+      - "fixyou-network"
 
   flyway:
-    image: flyway/flyway:9.16.0
+    image: "${FLYWAY_IMAGE}"
     container_name: flyway
     depends_on:
       - postgres
     volumes:
       - ./registrations/src/main/resources/db/migration:/flyway/sql
-    command: -url=jdbc:postgresql://postgres:5432/m33_db -user=postgres -password=F7@uM!dQ#2kLpZxT$9eV -schemas=fixyou -defaultSchema=fixyou migrate
+    command: >
+      -url=${FLYWAY_JDBC_URL}
+      -user=${FLYWAY_DB_USER}
+      -password=${FLYWAY_DB_PASSWORD}
+      -schemas=${FLYWAY_DEFAULT_SCHEMA}
+      -defaultSchema=${FLYWAY_DEFAULT_SCHEMA}
+      migrate
     networks:
-      - fixyou-network
+      - "fixyou-network"
 
   app:
     build: .
     container_name: fixyou_app
     ports:
-      - "8082:8080"
+      - "${APP_PORT}:8080"
     depends_on:
       - postgres
       - keycloak
     environment:
-      APPLICATION_ENVIRONMENT: local
-      JDBC_DATABASE_URL: jdbc:postgresql://postgres:5432/m33_db
-      JDBC_DATABASE_USERNAME: postgres
-      JDBC_DATABASE_PASSWORD: F7@uM!dQ#2kLpZxT$9eV
-      ENV_FILE: docker-NBQFC-3S0L1M3
-      ENV_PATH: /app/env
-      KEYCLOAK_URL: http://192.168.1.16:8080/
-      KEYCLOAK_REALM: fixyou-realm
-      FLYWAY_DEFAULT_SCHEMA: fixyou
-      FLYWAY_SCHEMAS: fixyou
+      APPLICATION_ENVIRONMENT: "${APPLICATION_ENVIRONMENT}"
+      JDBC_DATABASE_URL: "${JDBC_DATABASE_URL}"
+      JDBC_DATABASE_USERNAME: "${JDBC_DATABASE_USERNAME}"
+      JDBC_DATABASE_PASSWORD: "${JDBC_DATABASE_PASSWORD}"
+      ENV_FILE: "${ENV_FILE}"
+      ENV_PATH: "${ENV_PATH}"
+      KEYCLOAK_URL: "${KEYCLOAK_URL}"
+      KEYCLOAK_REALM: "${KEYCLOAK_REALM}"
+      FLYWAY_DEFAULT_SCHEMA: "${FLYWAY_DEFAULT_SCHEMA}"
+      FLYWAY_SCHEMAS: "${FLYWAY_SCHEMAS}"
     networks:
-      - fixyou-network
+      - "fixyou-network"
 
 networks:
   fixyou-network:
     external: true
-
