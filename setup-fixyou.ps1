@@ -8,6 +8,17 @@ Write-Host "==========================================="
 Write-Host "========= SETUP PROJETO FIXYOU ============"
 Write-Host "==========================================="
 
+# Função para salvar arquivo como UTF-8 sem BOM
+function Save-FileUtf8NoBom {
+    param (
+        [string]$Path,
+        [string]$Content
+    )
+
+    $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+    [System.IO.File]::WriteAllText($Path, $Content, $utf8NoBom)
+}
+
 # Obter IP local
 $ip = (Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway -ne $null } | Select-Object -First 1).IPv4Address.IPAddress
 
@@ -23,21 +34,24 @@ $replace = Read-Host "Deseja substituir <local-ip> pelo IP $ip e gerar os arquiv
 
 if ($replace -match "^(Y|y|S|s)$") {
     Write-Host "Copiando arquivos de template para a raiz do projeto..."
+    Write-Host "Substituindo <local-ip> nos arquivos e copiando para a raiz..."
 
-    Copy-Item -Path "$scriptDir\application-docs\scripts-files\docker-compose.yml" -Destination "$scriptDir\docker-compose.yml" -Force
-    Copy-Item -Path "$scriptDir\application-docs\scripts-files\Dockerfile" -Destination "$scriptDir\Dockerfile" -Force
+    $envTemplate = "$scriptDir\application-docs\scripts-files\.env"
+    $localEnvTemplate = "$scriptDir\application-docs\scripts-files\local.env"
+    $dockerComposeTemplate = "$scriptDir\application-docs\scripts-files\docker-compose.yml"
+    $dockerfileTemplate = "$scriptDir\application-docs\scripts-files\Dockerfile"
 
-    Write-Host "Substituindo <local-ip> nos arquivos..."
+    $envDest = "$scriptDir\.env"
+    $localEnvDest = "$scriptDir\local.env"
+    $dockerComposeDest = "$scriptDir\docker-compose.yml"
+    $dockerfileDest = "$scriptDir\Dockerfile"
 
-    # Substituição no docker-compose.yml
-    (Get-Content "$scriptDir\docker-compose.yml" -Raw) `
-        -replace '<local-ip>', "$ip" | `
-        Set-Content "$scriptDir\docker-compose.yml" -Encoding UTF8
+    Save-FileUtf8NoBom -Path $envDest -Content ((Get-Content $envTemplate -Raw) -replace '<local-ip>', "$ip")
+    Save-FileUtf8NoBom -Path $localEnvDest -Content ((Get-Content $localEnvTemplate -Raw) -replace '<local-ip>', "$ip")
+    Save-FileUtf8NoBom -Path $dockerComposeDest -Content ((Get-Content $dockerComposeTemplate -Raw) -replace '<local-ip>', "$ip")
+    Save-FileUtf8NoBom -Path $dockerfileDest -Content ((Get-Content $dockerfileTemplate -Raw) -replace '<local-ip>', "$ip")
 
-    # Substituição no Dockerfile
-    (Get-Content "$scriptDir\Dockerfile" -Raw) `
-        -replace '<local-ip>', "$ip" | `
-        Set-Content "$scriptDir\Dockerfile" -Encoding UTF8
+    Write-Host "Arquivos gerados com sucesso na raiz do projeto."
 } else {
     Write-Host "Pulando substituição dos IPs."
 }

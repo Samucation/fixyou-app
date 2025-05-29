@@ -69,7 +69,7 @@ public class ApiFixYou {
 			// Keycloak
 			setPropertyIfNotNull("KEYCLOAK_ISSUER_URI", dotenv.get("KEYCLOAK_ISSUER_URI"));
 			setPropertyIfNotNull("KEYCLOAK_JWK_SET_URI", dotenv.get("KEYCLOAK_JWK_SET_URI"));
-			setPropertyIfNotNull("CLIENT_VALUE", dotenv.get("CLIENT_VALUE"));
+			setPropertyIfNotNull("KEYCLOAK_CLIENT_ID", dotenv.get("KEYCLOAK_CLIENT_ID"));
 
 			// CORS
 			setPropertyIfNotNull("CORS_ALLOWED_LIST", dotenv.get("CORS_ALLOWED_LIST"));
@@ -109,7 +109,7 @@ public class ApiFixYou {
 
 			setPropertyIfNotNull("KEYCLOAK_ISSUER_URI", System.getenv("KEYCLOAK_ISSUER_URI"));
 			setPropertyIfNotNull("KEYCLOAK_JWK_SET_URI", System.getenv("KEYCLOAK_JWK_SET_URI"));
-			setPropertyIfNotNull("CLIENT_VALUE", System.getenv("CLIENT_VALUE"));
+			setPropertyIfNotNull("KEYCLOAK_CLIENT_ID", System.getenv("KEYCLOAK_CLIENT_ID"));
 
 			setPropertyIfNotNull("CORS_ALLOWED_LIST", System.getenv("CORS_ALLOWED_LIST"));
 			setPropertyIfNotNull("SECURITY_LOG_LEVEL", System.getenv("SECURITY_LOG_LEVEL"));

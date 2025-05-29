@@ -1,42 +1,42 @@
-﻿version: '3.8'
+version: '3.8'
 
 services:
   postgres:
-    image: "${POSTGRES_IMAGE}"
+    image: ${POSTGRES_IMAGE}
     container_name: postgres
     environment:
-      POSTGRES_DB: "${POSTGRES_DB}"
-      POSTGRES_USER: "${POSTGRES_USER}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "${POSTGRES_PORT}:5432"
     networks:
-      - "${DOCKER_NETWORK_NAME}"
+      - fixyou-network
 
   keycloak:
-    image: "${KEYCLOAK_IMAGE}"
+    image: ${KEYCLOAK_IMAGE}
     container_name: keycloak
     command: ["start-dev", "--import-realm"]
     environment:
-      KEYCLOAK_ADMIN: "${KEYCLOAK_ADMIN}"
-      KEYCLOAK_ADMIN_PASSWORD: "${KEYCLOAK_ADMIN_PASSWORD}"
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       KC_DB: postgres
-      KC_DB_URL: "${KC_DB_URL}"
-      KC_DB_USERNAME: "${KC_DB_USERNAME}"
-      KC_DB_PASSWORD: "${KC_DB_PASSWORD}"
-      KC_HOSTNAME: "${KEYCLOAK_HOSTNAME}"
+      KC_DB_URL: ${KC_DB_URL}
+      KC_DB_USERNAME: ${KC_DB_USERNAME}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+      KC_HOSTNAME: 192.168.1.17
       KC_HOSTNAME_STRICT: false
     ports:
       - "${KEYCLOAK_PORT}:8080"
     depends_on:
       - postgres
     volumes:
-      - ./application-docs/keycloak-data:/opt/keycloak/data
+      - ./keycloak-data:/opt/keycloak/data
     networks:
-      - "${DOCKER_NETWORK_NAME}"
+      - fixyou-network
 
   flyway:
-    image: "${FLYWAY_IMAGE}"
+    image: ${FLYWAY_IMAGE}
     container_name: flyway
     depends_on:
       - postgres
@@ -50,29 +50,29 @@ services:
       -defaultSchema=${FLYWAY_DEFAULT_SCHEMA}
       migrate
     networks:
-      - "${DOCKER_NETWORK_NAME}"
+      - fixyou-network
 
   app:
     build: .
-    container_name: api_fixyou
+    container_name: fixyou_app
     ports:
       - "${APP_PORT}:8080"
     depends_on:
       - postgres
       - keycloak
     environment:
-      APPLICATION_ENVIRONMENT: "${APPLICATION_ENVIRONMENT}"
-      JDBC_DATABASE_URL: "${JDBC_DATABASE_URL}"
-      JDBC_DATABASE_USERNAME: "${JDBC_DATABASE_USERNAME}"
-      JDBC_DATABASE_PASSWORD: "${JDBC_DATABASE_PASSWORD}"
-      ENV_FILE: "${ENV_FILE}"
-      ENV_PATH: "${ENV_PATH}"
-      KEYCLOAK_URL: "${KEYCLOAK_URL}"
-      KEYCLOAK_REALM: "${KEYCLOAK_REALM}"
-      FLYWAY_DEFAULT_SCHEMA: "${FLYWAY_DEFAULT_SCHEMA}"
-      FLYWAY_SCHEMAS: "${FLYWAY_SCHEMAS}"
+      APPLICATION_ENVIRONMENT: ${APPLICATION_ENVIRONMENT}
+      JDBC_DATABASE_URL: ${JDBC_DATABASE_URL}
+      JDBC_DATABASE_USERNAME: ${JDBC_DATABASE_USERNAME}
+      JDBC_DATABASE_PASSWORD: ${JDBC_DATABASE_PASSWORD}
+      ENV_FILE: ${ENV_FILE}
+      ENV_PATH: ${ENV_PATH}
+      KEYCLOAK_URL: http://192.168.1.17:8080/
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM}
+      FLYWAY_DEFAULT_SCHEMA: ${FLYWAY_DEFAULT_SCHEMA}
+      FLYWAY_SCHEMAS: ${FLYWAY_SCHEMAS}
     networks:
-      - "${DOCKER_NETWORK_NAME}"
+      - fixyou-network
 
 networks:
   fixyou-network:
