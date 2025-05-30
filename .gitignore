@@ -54,3 +54,8 @@ build/
 
 # Ignorar logs da aplicação registrations
 registrations/logs/*
+
+# Ignorar apenas os arquivos .env e local.env da raiz do projeto
+/.env
+/local.env
+/api-fixyou.log
