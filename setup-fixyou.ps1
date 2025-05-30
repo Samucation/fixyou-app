@@ -34,23 +34,17 @@ $replace = Read-Host "Deseja substituir <local-ip> pelo IP $ip e gerar os arquiv
 
 if ($replace -match "^(Y|y|S|s)$") {
     Write-Host "Copiando arquivos de template para a raiz do projeto..."
-    Write-Host "Substituindo <local-ip> nos arquivos e copiando para a raiz..."
+    Write-Host "Substituindo <local-ip> nos arquivos .env e local.env..."
 
     $envTemplate = "$scriptDir\application-docs\scripts-files\.env"
     $localEnvTemplate = "$scriptDir\application-docs\scripts-files\local.env"
-    $dockerComposeTemplate = "$scriptDir\application-docs\scripts-files\docker-compose.yml"
-    $dockerfileTemplate = "$scriptDir\application-docs\scripts-files\Dockerfile"
 
     $envDest = "$scriptDir\.env"
     $localEnvDest = "$scriptDir\local.env"
-    $dockerComposeDest = "$scriptDir\docker-compose.yml"
-    $dockerfileDest = "$scriptDir\Dockerfile"
 
     # Gera .env e local.env substituindo <local-ip>
     Save-FileUtf8NoBom -Path $envDest -Content ((Get-Content $envTemplate -Raw) -replace '<local-ip>', "$ip")
     Save-FileUtf8NoBom -Path $localEnvDest -Content ((Get-Content $localEnvTemplate -Raw) -replace '<local-ip>', "$ip")
-    Save-FileUtf8NoBom -Path $dockerComposeDest -Content ((Get-Content $dockerComposeTemplate -Raw) -replace '<local-ip>', "$ip")
-    Save-FileUtf8NoBom -Path $dockerfileDest -Content ((Get-Content $dockerfileTemplate -Raw) -replace '<local-ip>', "$ip")
 
     Write-Host "Arquivos .env e local.env gerados com sucesso na raiz do projeto."
 } else {

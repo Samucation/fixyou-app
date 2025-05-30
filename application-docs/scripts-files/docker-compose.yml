@@ -1,4 +1,4 @@
-﻿version: '3.8'
+version: '3.8'
 
 services:
   postgres:
@@ -24,14 +24,14 @@ services:
       KC_DB_URL: ${KC_DB_URL}
       KC_DB_USERNAME: ${KC_DB_USERNAME}
       KC_DB_PASSWORD: ${KC_DB_PASSWORD}
-      KC_HOSTNAME: <local-ip>
+      KC_HOSTNAME: 192.168.1.17
       KC_HOSTNAME_STRICT: false
     ports:
       - "${KEYCLOAK_PORT}:8080"
     depends_on:
       - postgres
     volumes:
-      - ./keycloak-data:/opt/keycloak/data
+      - ./application-docs/scripts-files/keycloak-data:/opt/keycloak/data
     networks:
       - ${DOCKER_NETWORK_NAME}
 
@@ -56,18 +56,18 @@ services:
     build: .
     container_name: api_fixyou
     ports:
-      - "${APP_PORT}:8080"
+      - "${DOCKER_APPLICATION_EXTERNAL_PORT}:8080"
     depends_on:
       - postgres
       - keycloak
     environment:
       APPLICATION_ENVIRONMENT: ${APPLICATION_ENVIRONMENT}
+      ENV_FILE: ${ENV_FILE}
+      ENV_PATH: ${ENV_PATH}
       JDBC_DATABASE_URL: ${JDBC_DATABASE_URL}
       JDBC_DATABASE_USERNAME: ${JDBC_DATABASE_USERNAME}
       JDBC_DATABASE_PASSWORD: ${JDBC_DATABASE_PASSWORD}
-      ENV_FILE: ${ENV_FILE}
-      ENV_PATH: ${ENV_PATH}
-      KEYCLOAK_URL: http://<local-ip>:8080/
+      KEYCLOAK_URL: ${KEYCLOAK_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM}
       FLYWAY_DEFAULT_SCHEMA: ${FLYWAY_DEFAULT_SCHEMA}
       FLYWAY_SCHEMAS: ${FLYWAY_SCHEMAS}
@@ -75,5 +75,5 @@ services:
       - ${DOCKER_NETWORK_NAME}
 
 networks:
-  ${DOCKER_NETWORK_NAME}:
+  fixyou-network:
     external: true

@@ -31,30 +31,37 @@ fi
 echo "IP detectado: $ip"
 
 # Perguntar se deseja substituir os marcadores
-read -p "Deseja substituir <local-ip> pelo IP $ip e gerar o arquivo .env? (Y/N) " replace
+read -p "Deseja substituir <local-ip> pelo IP $ip e gerar os arquivos .env e local.env? (Y/N) " replace
 
 if [[ "$replace" =~ ^[YySs]$ ]]; then
 
-    echo "Gerando arquivo .env na raiz do projeto a partir do template..."
+    echo "Gerando arquivos .env e local.env na raiz do projeto a partir dos templates..."
 
-    # Caminho do template base
-    templatePath="$scriptDir/application-docs/scripts-files/.env"
+    envTemplate="$scriptDir/application-docs/scripts-files/.env"
+    localEnvTemplate="$scriptDir/application-docs/scripts-files/local.env"
 
-    if [ ! -f "$templatePath" ]; then
-      echo "❌ Template .env não encontrado em: $templatePath"
+    if [ ! -f "$envTemplate" ]; then
+      echo "❌ Template .env não encontrado: $envTemplate"
       exit 1
     fi
 
-    # Substituir <local-ip> pelo IP real
-    envContent=$(<"$templatePath")
-    envFinal=${envContent//<local-ip>/$ip}
+    if [ ! -f "$localEnvTemplate" ]; then
+      echo "❌ Template local.env não encontrado: $localEnvTemplate"
+      exit 1
+    fi
 
-    # Salvar na raiz do projeto
+    envContent=$(<"$envTemplate")
+    envFinal=${envContent//<local-ip>/$ip}
     echo -n "$envFinal" > "$scriptDir/.env"
     echo "✅ Arquivo .env criado com sucesso em: $scriptDir/.env"
 
+    localEnvContent=$(<"$localEnvTemplate")
+    localEnvFinal=${localEnvContent//<local-ip>/$ip}
+    echo -n "$localEnvFinal" > "$scriptDir/local.env"
+    echo "✅ Arquivo local.env criado com sucesso em: $scriptDir/local.env"
+
 else
-    echo "⚠️  Pulando substituição dos IPs e geração do arquivo .env."
+    echo "⚠️  Pulando substituição dos IPs e geração dos arquivos."
 fi
 
 # Verificar e criar a network 'fixyou-network' se não existir

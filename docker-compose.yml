@@ -11,7 +11,7 @@ services:
     ports:
       - "${POSTGRES_PORT}:5432"
     networks:
-      - fixyou-network
+      - ${DOCKER_NETWORK_NAME}
 
   keycloak:
     image: ${KEYCLOAK_IMAGE}
@@ -33,7 +33,7 @@ services:
     volumes:
       - ./application-docs/scripts-files/keycloak-data:/opt/keycloak/data
     networks:
-      - fixyou-network
+      - ${DOCKER_NETWORK_NAME}
 
   flyway:
     image: ${FLYWAY_IMAGE}
@@ -50,7 +50,7 @@ services:
       -defaultSchema=${FLYWAY_DEFAULT_SCHEMA}
       migrate
     networks:
-      - fixyou-network
+      - ${DOCKER_NETWORK_NAME}
 
   api:
     build: .
@@ -67,12 +67,12 @@ services:
       JDBC_DATABASE_URL: ${JDBC_DATABASE_URL}
       JDBC_DATABASE_USERNAME: ${JDBC_DATABASE_USERNAME}
       JDBC_DATABASE_PASSWORD: ${JDBC_DATABASE_PASSWORD}
-      KEYCLOAK_URL: http://192.168.1.17:8080/
+      KEYCLOAK_URL: ${KEYCLOAK_URL}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM}
       FLYWAY_DEFAULT_SCHEMA: ${FLYWAY_DEFAULT_SCHEMA}
       FLYWAY_SCHEMAS: ${FLYWAY_SCHEMAS}
     networks:
-      - fixyou-network
+      - ${DOCKER_NETWORK_NAME}
 
 networks:
   fixyou-network:
