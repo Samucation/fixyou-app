@@ -52,9 +52,9 @@ services:
     networks:
       - ${DOCKER_NETWORK_NAME}
 
-  app:
+  api:
     build: .
-    container_name: fixyou_app
+    container_name: api_fixyou
     ports:
       - "${APP_PORT}:8080"
     depends_on:

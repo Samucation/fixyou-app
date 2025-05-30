@@ -46,12 +46,13 @@ if ($replace -match "^(Y|y|S|s)$") {
     $dockerComposeDest = "$scriptDir\docker-compose.yml"
     $dockerfileDest = "$scriptDir\Dockerfile"
 
+    # Gera .env e local.env substituindo <local-ip>
     Save-FileUtf8NoBom -Path $envDest -Content ((Get-Content $envTemplate -Raw) -replace '<local-ip>', "$ip")
     Save-FileUtf8NoBom -Path $localEnvDest -Content ((Get-Content $localEnvTemplate -Raw) -replace '<local-ip>', "$ip")
     Save-FileUtf8NoBom -Path $dockerComposeDest -Content ((Get-Content $dockerComposeTemplate -Raw) -replace '<local-ip>', "$ip")
     Save-FileUtf8NoBom -Path $dockerfileDest -Content ((Get-Content $dockerfileTemplate -Raw) -replace '<local-ip>', "$ip")
 
-    Write-Host "Arquivos gerados com sucesso na raiz do projeto."
+    Write-Host "Arquivos .env e local.env gerados com sucesso na raiz do projeto."
 } else {
     Write-Host "Pulando substituição dos IPs."
 }

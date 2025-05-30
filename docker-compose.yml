@@ -31,7 +31,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./keycloak-data:/opt/keycloak/data
+      - ./application-docs/scripts-files/keycloak-data:/opt/keycloak/data
     networks:
       - fixyou-network
 
@@ -52,21 +52,21 @@ services:
     networks:
       - fixyou-network
 
-  app:
+  api:
     build: .
-    container_name: fixyou_app
+    container_name: api_fixyou
     ports:
-      - "${APP_PORT}:8080"
+      - "${DOCKER_APPLICATION_EXTERNAL_PORT}:8080"
     depends_on:
       - postgres
       - keycloak
     environment:
       APPLICATION_ENVIRONMENT: ${APPLICATION_ENVIRONMENT}
+      ENV_FILE: ${ENV_FILE}
+      ENV_PATH: ${ENV_PATH}
       JDBC_DATABASE_URL: ${JDBC_DATABASE_URL}
       JDBC_DATABASE_USERNAME: ${JDBC_DATABASE_USERNAME}
       JDBC_DATABASE_PASSWORD: ${JDBC_DATABASE_PASSWORD}
-      ENV_FILE: ${ENV_FILE}
-      ENV_PATH: ${ENV_PATH}
       KEYCLOAK_URL: http://192.168.1.17:8080/
       KEYCLOAK_REALM: ${KEYCLOAK_REALM}
       FLYWAY_DEFAULT_SCHEMA: ${FLYWAY_DEFAULT_SCHEMA}

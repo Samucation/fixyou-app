@@ -12,76 +12,83 @@ import java.io.File;
 @SpringBootApplication
 public class ApiFixYou {
 
-	private static final Logger LOGGER = LogManager.getLogger(FixYouApplication.class);
+	private static final Logger LOGGER = LogManager.getLogger(ApiFixYou.class);
 
 	@Value("${application.environment}")
 	private String environmentType;
 
 	public static void main(String[] args) {
 		loadEnvironmentsConfigurations();
-		SpringApplication.run(FixYouApplication.class, args);
+		SpringApplication.run(ApiFixYou.class, args);
 	}
 
 	private static void loadEnvironmentsConfigurations() {
 		String environmentType = System.getenv("APPLICATION_ENVIRONMENT");
+		LOGGER.info("Valor lido de APPLICATION_ENVIRONMENT: [{}]", environmentType);
 
 		if ("local".equalsIgnoreCase(environmentType) || "docker".equalsIgnoreCase(environmentType)) {
 			LOGGER.info("Carregando variáveis de ambiente do arquivo .env para ambiente local.");
 
 			String envPath = System.getenv("ENV_PATH");
 			if (envPath == null || envPath.isBlank()) {
-				envPath = ".";
+				envPath = new File("").getAbsolutePath();
+				LOGGER.warn("ENV_PATH não definido. Usando raiz do projeto: [{}]", envPath);
 			}
 
 			String envFile = System.getenv("ENV_FILE");
-			String fileName = (envFile == null || envFile.isBlank()) ? ".env" : envFile.trim();
+			String fileName;
+			if (envFile == null || envFile.isBlank() || "DEFAULT_ENV".equalsIgnoreCase(envFile)) {
+				fileName = ".env";
+			} else {
+				fileName = envFile.endsWith(".env") ? envFile : envFile + ".env";
+			}
 
-			LOGGER.info("Verificando ENV_PATH: {}", envPath);
-			LOGGER.info("Verificando ENV_FILE: {}", fileName);
+			LOGGER.info("Verificando ENV_PATH: [{}]", envPath);
+			LOGGER.info("Verificando ENV_FILE: [{}]", fileName);
 
-			File dotenvFile = new File(envPath + "/" + fileName);
+			File dotenvFile = new File(envPath + File.separator + fileName);
 			if (!dotenvFile.exists()) {
-				LOGGER.error("Arquivo .env não encontrado no caminho: {}", dotenvFile.getAbsolutePath());
+				LOGGER.error("Arquivo .env não encontrado no caminho: [{}]", dotenvFile.getAbsolutePath());
 				throw new RuntimeException("Arquivo .env não encontrado: " + dotenvFile.getAbsolutePath());
 			}
 
-			Dotenv dotenv = Dotenv.configure()
-					.directory(envPath)
-					.filename(fileName)
-					.load();
+			Dotenv dotenv;
 
-			// Infra
+			if (envPath == null || envPath.isBlank() || envPath.equals(".")) {
+				dotenv = Dotenv.configure()
+						.filename(fileName)
+						.load();
+			} else {
+				dotenv = Dotenv.configure()
+						.directory(envPath)
+						.filename(fileName)
+						.load();
+			}
+
 			setPropertyIfNotNull("server.port", dotenv.get("SERVER_PORT"));
 			setPropertyIfNotNull("APPLICATION_NAME", dotenv.get("APPLICATION_NAME"));
 
-			// Database
 			setPropertyIfNotNull("spring.datasource.url", dotenv.get("JDBC_DATABASE_URL"));
 			setPropertyIfNotNull("spring.datasource.username", dotenv.get("JDBC_DATABASE_USERNAME"));
 			setPropertyIfNotNull("spring.datasource.password", dotenv.get("JDBC_DATABASE_PASSWORD"));
 			setPropertyIfNotNull("spring.jpa.hibernate.ddl-auto", dotenv.get("HIBERNATE_DDL_AUTO"));
 
-			// JPA e Logs SQL
 			setPropertyIfNotNull("JPA_SHOW_SQL", dotenv.get("JPA_SHOW_SQL", "true"));
 			setPropertyIfNotNull("HIBERNATE_DIALECT", dotenv.get("HIBERNATE_DIALECT", "org.hibernate.dialect.PostgreSQLDialect"));
 			setPropertyIfNotNull("SQL_LOG_LEVEL", dotenv.get("SQL_LOG_LEVEL", "DEBUG"));
 			setPropertyIfNotNull("SQL_BIND_LOG_LEVEL", dotenv.get("SQL_BIND_LOG_LEVEL", "TRACE"));
 
-			// Keycloak
 			setPropertyIfNotNull("KEYCLOAK_ISSUER_URI", dotenv.get("KEYCLOAK_ISSUER_URI"));
 			setPropertyIfNotNull("KEYCLOAK_JWK_SET_URI", dotenv.get("KEYCLOAK_JWK_SET_URI"));
 			setPropertyIfNotNull("KEYCLOAK_CLIENT_ID", dotenv.get("KEYCLOAK_CLIENT_ID"));
 
-			// CORS
 			setPropertyIfNotNull("CORS_ALLOWED_LIST", dotenv.get("CORS_ALLOWED_LIST"));
 
-			// Outros Logs
 			setPropertyIfNotNull("SECURITY_LOG_LEVEL", dotenv.get("SECURITY_LOG_LEVEL", "DEBUG"));
 			setPropertyIfNotNull("WEB_LOG_LEVEL", dotenv.get("WEB_LOG_LEVEL", "DEBUG"));
 
-			// Segurança
 			setPropertyIfNotNull("SPRINT_SECURITY_BASIC", dotenv.get("SPRINT_SECURITY_BASIC"));
 
-			// Flyway
 			setPropertyIfNotNull("FLYWAY_CLEAN_DISABLED", dotenv.get("FLYWAY_CLEAN_DISABLED", "true"));
 
 			LOGGER.info("Environments loaded do .env: JDBC_DATABASE_URL: [{}], JDBC_DATABASE_USERNAME: [{}], KEYCLOAK_ISSUER_URI: [{}], CORS_ALLOWED_LIST: [{}]",
@@ -92,7 +99,7 @@ public class ApiFixYou {
 			);
 
 		} else {
-			LOGGER.info("Ambiente remoto detectado. Usando variáveis de ambiente do sistema.");
+			LOGGER.info("Ambiente remoto detectado [CLOUD MODE]. Usando variáveis de ambiente internas do sistema, será necessário definir as enriroments.");
 
 			setPropertyIfNotNull("server.port", System.getenv("SERVER_PORT"));
 			setPropertyIfNotNull("APPLICATION_NAME", System.getenv("APPLICATION_NAME"));
@@ -129,6 +136,8 @@ public class ApiFixYou {
 	private static void setPropertyIfNotNull(String key, String value) {
 		if (value != null) {
 			System.setProperty(key, value);
+		} else {
+			LOGGER.warn("Variável de ambiente [{}] está ausente ou nula. Verifique o arquivo .env ou as variáveis do sistema.", key);
 		}
 	}
 }

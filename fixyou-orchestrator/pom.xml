@@ -100,7 +100,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.fcamara.FixYouApplication</mainClass>
+                            <mainClass>com.fcamara.ApiFixYou</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
