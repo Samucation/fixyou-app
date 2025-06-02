@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="maven-antrun-" default="main">
+  <target name="main">
+    <copy file="C:\Dev\Workspace\fixyou\fixyou-orchestrator\target/api-fixyou.jar" tofile="C:\Dev\Workspace\fixyou\fixyou-orchestrator/../api-fixyou.jar" />
+  </target>
+</project>

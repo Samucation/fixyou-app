@@ -59,3 +59,7 @@ registrations/logs/*
 /.env
 /local.env
 /api-fixyou.log
+
+# EXCEÇÃO: Permitir o JAR do fixyou-orchestrator
+!fixyou-orchestrator/target/
+!fixyou-orchestrator/target/api-fixyou.jar
