@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS fixyou.tb_department (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     unit_id INT NOT NULL,
+    department_type_id INT,
     FOREIGN KEY (unit_id) REFERENCES fixyou.tb_unit(id)
 );
 

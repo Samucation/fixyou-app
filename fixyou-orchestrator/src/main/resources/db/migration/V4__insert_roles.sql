@@ -1,43 +1,43 @@
--- V4__insert_roles.sql
-INSERT INTO fixyou.tb_roles (name) VALUES
-('ADMIN'),
-('GESTOR'),
-('MEDICO'),
-('PROFISSIONAL');
-
--- V5__insert_institutions_units_departments_sectors_profiles.sql
+-- Instituição principal
 INSERT INTO fixyou.tb_institution (name, cnpj, description) VALUES
-('Institution A', '12.345.678/0001-90', 'Main institution for POC');
+('Hospital Municipal São Lucas', '12.345.678/0001-90', 'Hospital geral de atendimento público');
 
+-- Unidades hospitalares
 INSERT INTO fixyou.tb_unit (name, code, address, city, state, zip_code, institution_id) VALUES
-('Unit SP', 'SP001', 'Av. Paulista', 'São Paulo', 'SP', '01311-000', 1),
-('Unit RJ', 'RJ001', 'Av. Atlântica', 'Rio de Janeiro', 'RJ', '22010-000', 1);
+('Unidade Central', 'UC001', 'Av. Paulista', 'São Paulo', 'SP', '01311-000', 1),
+('Unidade Infantil', 'UI001', 'Rua das Crianças', 'São Paulo', 'SP', '01311-001', 1);
 
-INSERT INTO fixyou.tb_department (name, unit_id) VALUES
-('Finance', 1),
-('IT', 1),
-('HR', 2);
+-- Departamentos (com tipo associado)
+INSERT INTO fixyou.tb_department (name, unit_id, department_type_id) VALUES
+('Clínica Geral', 1, 1),        -- tipo 1 = Clínica Geral
+('Pediatria', 2, 2),            -- tipo 2 = Pediatria
+('Enfermagem', 1, 3);           -- tipo 3 = Enfermagem
 
+-- Setores
 INSERT INTO fixyou.tb_sector (name, department_id) VALUES
-('Payments', 1),
-('Infrastructure', 2),
-('Recruitment', 3);
+('Consultas Ambulatoriais', 1),
+('Vacinação Infantil', 2),
+('Triagem de Pacientes', 3);
 
+-- Perfis (colaboradores)
 INSERT INTO fixyou.tb_profile (preferred_shift, job_title, unit_id) VALUES
-('Morning', 'Manager', 1),
-('Evening', 'Developer', 1),
-('Night', 'Analyst', 2);
+('Manhã', 'Gestor Clínico', 1),
+('Tarde', 'Médico Pediatra', 2),
+('Noite', 'Enfermeira', 1);
 
+-- Vínculos com departamentos
 INSERT INTO fixyou.tb_profile_departments (profile_id, department_id) VALUES
 (1, 1),
 (2, 2),
 (3, 3);
 
+-- Vínculos com setores
 INSERT INTO fixyou.tb_profile_sectors (profile_id, sector_id) VALUES
 (1, 1),
 (2, 2),
 (3, 3);
 
+-- Dados pessoais
 INSERT INTO fixyou.tb_person_data (contract_type, cpf, cnpj, rg, cnh, profile_id) VALUES
 ('CLT', '123.456.789-00', null, 'MG-12.345.678', '12345678900', 1),
 ('PJ', null, '12.345.678/0001-90', null, null, 2),
