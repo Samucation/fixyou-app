@@ -107,6 +107,8 @@ public class PersonData {
         return Objects.hashCode(id);
     }
 
+
+
     @Override
     public String toString() {
         return "PersonData{" +
@@ -118,5 +120,79 @@ public class PersonData {
                 ", cnpj='" + cnpj + '\'' +
                 ", profile=" + profile +
                 '}';
+    }
+
+    public static final class Builder {
+        private Long id;
+        private ContractType contractType;
+        private String cpf;
+        private String rg;
+        private String cnh;
+        private String cnpj;
+        private Profile profile;
+
+        public Builder() {
+        }
+
+        public Builder(PersonData other) {
+            this.id = other.id;
+            this.contractType = other.contractType;
+            this.cpf = other.cpf;
+            this.rg = other.rg;
+            this.cnh = other.cnh;
+            this.cnpj = other.cnpj;
+            this.profile = other.profile;
+        }
+
+        public static Builder aPersonData() {
+            return new Builder();
+        }
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder contractType(ContractType contractType) {
+            this.contractType = contractType;
+            return this;
+        }
+
+        public Builder cpf(String cpf) {
+            this.cpf = cpf;
+            return this;
+        }
+
+        public Builder rg(String rg) {
+            this.rg = rg;
+            return this;
+        }
+
+        public Builder cnh(String cnh) {
+            this.cnh = cnh;
+            return this;
+        }
+
+        public Builder cnpj(String cnpj) {
+            this.cnpj = cnpj;
+            return this;
+        }
+
+        public Builder profile(Profile profile) {
+            this.profile = profile;
+            return this;
+        }
+
+        public PersonData build() {
+            PersonData personData = new PersonData();
+            personData.setId(id);
+            personData.setContractType(contractType);
+            personData.setCpf(cpf);
+            personData.setRg(rg);
+            personData.setCnh(cnh);
+            personData.setCnpj(cnpj);
+            personData.setProfile(profile);
+            return personData;
+        }
     }
 }

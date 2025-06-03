@@ -16,15 +16,15 @@ public class Department {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "branch_id", nullable = false)
-    private Branch branch;
+    @JoinColumn(name = "unit_id", nullable = false)
+    private Unit unit;
 
     public Department() {}
 
-    public Department(Long id, String name, Branch branch) {
+    public Department(Long id, String name, Unit unit) {
         this.id = id;
         this.name = name;
-        this.branch = branch;
+        this.unit = unit;
     }
 
     public Long getId() {
@@ -43,12 +43,12 @@ public class Department {
         this.name = name;
     }
 
-    public Branch getBranch() {
-        return branch;
+    public Unit getBranch() {
+        return unit;
     }
 
-    public void setBranch(Branch branch) {
-        this.branch = branch;
+    public void setBranch(Unit branch) {
+        this.unit = branch;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class Department {
         return "Department{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", branch=" + branch +
+                ", unit=" + unit +
                 '}';
     }
 }

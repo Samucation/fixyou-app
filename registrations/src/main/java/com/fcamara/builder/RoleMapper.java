@@ -2,38 +2,27 @@ package com.fcamara.builder;
 
 import com.fcamara.dto.RoleDTO;
 import com.fcamara.model.Role;
-import org.modelmapper.ModelMapper;
+import com.fcamara.model.UserRole;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class RoleMapper {
 
-    private final ModelMapper modelMapper;
-
-    public RoleMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
-
     public RoleDTO toDTO(Role role) {
-        return modelMapper.map(role, RoleDTO.class);
+        if (role == null) return null;
+
+        return new RoleDTO(
+                role.getId(),
+                role.getName() != null ? role.getName().name() : null
+        );
     }
 
     public Role toEntity(RoleDTO dto) {
-        return modelMapper.map(dto, Role.class);
-    }
+        if (dto == null) return null;
 
-    public List<RoleDTO> toListDTO(List<Role> roles) {
-        return roles.stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    public List<Role> toListEntity(List<RoleDTO> dtos) {
-        return dtos.stream()
-                .map(this::toEntity)
-                .collect(Collectors.toList());
+        return Role.Builder.aRole()
+                .id(dto.id())
+                .name(dto.name() != null ? UserRole.valueOf(dto.name()) : null)
+                .build();
     }
 }

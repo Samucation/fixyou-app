@@ -1,12 +1,12 @@
 package com.fcamara.dto;
 
-import java.util.Set;
 
+import java.util.Set;
 
 public record UserDTO(
         Long id,
         String username,
-        Set<String> roles,
-        ProfileDTO profile
-) {
-}
+        String keycloakId,
+        Long profileId,
+        Set<String> roleNames
+) {}

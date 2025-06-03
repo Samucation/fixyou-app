@@ -18,8 +18,8 @@ public class Profile {
     private PersonData personData;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "branch_id", nullable = false)
-    private Branch branch;
+    @JoinColumn(name = "unit_id", nullable = false)
+    private Unit unit;
 
     @ManyToMany
     @JoinTable(
@@ -30,14 +30,23 @@ public class Profile {
     )
     private Set<Department> departments = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "tb_profile_sectors",
+            schema = "fixyou",
+            joinColumns = @JoinColumn(name = "profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "sector_id")
+    )
+    private Set<Sector> sectors = new HashSet<>();
+
     private String preferredShift;
     private String jobTitle;
 
     public Profile() {}
 
-    public Profile(Long id, Branch branch, Set<Department> departments, String preferredShift, String jobTitle) {
+    public Profile(Long id, Unit unit, Set<Department> departments, String preferredShift, String jobTitle) {
         this.id = id;
-        this.branch = branch;
+        this.unit = unit;
         this.departments = departments;
         this.preferredShift = preferredShift;
         this.jobTitle = jobTitle;
@@ -59,12 +68,12 @@ public class Profile {
         this.personData = personData;
     }
 
-    public Branch getBranch() {
-        return branch;
+    public Unit getUnit() {
+        return unit;
     }
 
-    public void setBranch(Branch branch) {
-        this.branch = branch;
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 
     public Set<Department> getDepartments() {
@@ -104,14 +113,90 @@ public class Profile {
         return Objects.hash(id);
     }
 
+
+
     @Override
     public String toString() {
         return "Profile{" +
                 "id=" + id +
-                ", branch=" + (branch != null ? branch.getId() : null) +
+                ", unit=" + (unit != null ? unit.getId() : null) +
                 ", preferredShift='" + preferredShift + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
                 ", departments=" + departments +
                 '}';
+    }
+
+    public static final class Builder {
+        private Long id;
+        private PersonData personData;
+        private Unit unit;
+        private Set<Department> departments;
+        private Set<Sector> sectors;
+        private String preferredShift;
+        private String jobTitle;
+
+        public Builder() {
+        }
+
+        public Builder(Profile other) {
+            this.id = other.id;
+            this.personData = other.personData;
+            this.unit = other.unit;
+            this.departments = other.departments;
+            this.sectors = other.sectors;
+            this.preferredShift = other.preferredShift;
+            this.jobTitle = other.jobTitle;
+        }
+
+        public static Builder aProfile() {
+            return new Builder();
+        }
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder personData(PersonData personData) {
+            this.personData = personData;
+            return this;
+        }
+
+        public Builder unit(Unit unit) {
+            this.unit = unit;
+            return this;
+        }
+
+        public Builder departments(Set<Department> departments) {
+            this.departments = departments;
+            return this;
+        }
+
+        public Builder sectors(Set<Sector> sectors) {
+            this.sectors = sectors;
+            return this;
+        }
+
+        public Builder preferredShift(String preferredShift) {
+            this.preferredShift = preferredShift;
+            return this;
+        }
+
+        public Builder jobTitle(String jobTitle) {
+            this.jobTitle = jobTitle;
+            return this;
+        }
+
+        public Profile build() {
+            Profile profile = new Profile();
+            profile.setId(id);
+            profile.setPersonData(personData);
+            profile.setUnit(unit);
+            profile.setDepartments(departments);
+            profile.setPreferredShift(preferredShift);
+            profile.setJobTitle(jobTitle);
+            profile.sectors = this.sectors;
+            return profile;
+        }
     }
 }

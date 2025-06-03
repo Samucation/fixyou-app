@@ -8,39 +8,42 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/profiles")
+@RequestMapping("/profiles")
 public class ProfileController {
 
-    private final ProfileService profileService;
+    private final ProfileService service;
 
-    public ProfileController(ProfileService profileService) {
-        this.profileService = profileService;
-    }
-
-    @PostMapping
-    public ResponseEntity<ProfileDTO> create(@RequestBody ProfileDTO dto) {
-        return ResponseEntity.ok(profileService.createProfile(dto));
+    public ProfileController(ProfileService service) {
+        this.service = service;
     }
 
     @GetMapping
     public ResponseEntity<List<ProfileDTO>> getAll() {
-        return ResponseEntity.ok(profileService.getAllProfiles());
+        return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProfileDTO> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(profileService.getProfileById(id));
+        return service.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/by-branch/{branchId}")
-    public ResponseEntity<List<ProfileDTO>> getByBranch(@PathVariable Long branchId) {
-        return ResponseEntity.ok(profileService.getProfilesByBranch(branchId));
+    @GetMapping("/job-title/{title}")
+    public ResponseEntity<ProfileDTO> getByJobTitle(@PathVariable String title) {
+        return service.findByJobTitle(title)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<ProfileDTO> create(@RequestBody ProfileDTO dto) {
+        return ResponseEntity.ok(service.save(dto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        profileService.deleteProfile(id);
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 }

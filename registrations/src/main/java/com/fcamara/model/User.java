@@ -102,6 +102,8 @@ public class User {
         return Objects.hashCode(id);
     }
 
+
+
     @Override
     public String toString() {
         return "User{" +
@@ -111,5 +113,63 @@ public class User {
                 ", roles=" + roles +
                 ", profile=" + profile +
                 '}';
+    }
+
+    public static final class Builder {
+        private Long id;
+        private String username;
+        private String keycloakId;
+        private Set<Role> roles;
+        private Profile profile;
+
+        public Builder() {
+        }
+
+        public Builder(User other) {
+            this.id = other.id;
+            this.username = other.username;
+            this.keycloakId = other.keycloakId;
+            this.roles = other.roles;
+            this.profile = other.profile;
+        }
+
+        public static Builder anUser() {
+            return new Builder();
+        }
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder username(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder keycloakId(String keycloakId) {
+            this.keycloakId = keycloakId;
+            return this;
+        }
+
+        public Builder roles(Set<Role> roles) {
+            this.roles = roles;
+            return this;
+        }
+
+        public Builder profile(Profile profile) {
+            this.profile = profile;
+            return this;
+        }
+
+        public User build() {
+            User user = new User();
+            user.setId(id);
+            user.setUsername(username);
+            user.setKeycloakId(keycloakId);
+            user.setRoles(roles);
+            user.setProfile(profile);
+            return user;
+        }
     }
 }

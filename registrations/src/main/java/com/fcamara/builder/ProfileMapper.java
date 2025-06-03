@@ -1,40 +1,32 @@
 package com.fcamara.builder;
 
 import com.fcamara.dto.ProfileDTO;
-import com.fcamara.model.Branch;
-import com.fcamara.model.Department;
 import com.fcamara.model.Profile;
+import com.fcamara.model.Unit;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class ProfileMapper {
 
     public ProfileDTO toDTO(Profile profile) {
+        if (profile == null) return null;
+
         return new ProfileDTO(
                 profile.getId(),
-                profile.getBranch().getId(),
-                profile.getBranch().getName(),
-                profile.getDepartments().stream().map(Department::getId).collect(Collectors.toSet()),
                 profile.getPreferredShift(),
-                profile.getJobTitle()
+                profile.getJobTitle(),
+                profile.getUnit() != null ? profile.getUnit().getId() : null
         );
     }
 
-    public Profile toEntity(ProfileDTO dto, Branch branch, Set<Department> departments) {
-        return new Profile(
-                dto.id(),
-                branch,
-                departments,
-                dto.preferredShift(),
-                dto.jobTitle()
-        );
-    }
+    public Profile toEntity(ProfileDTO dto, Unit unit) {
+        if (dto == null) return null;
 
-    public List<ProfileDTO> toDTOList(List<Profile> profiles) {
-        return profiles.stream().map(this::toDTO).collect(Collectors.toList());
+        return Profile.Builder.aProfile()
+                .id(dto.id())
+                .preferredShift(dto.preferredShift())
+                .jobTitle(dto.jobTitle())
+                .unit(unit)
+                .build();
     }
 }

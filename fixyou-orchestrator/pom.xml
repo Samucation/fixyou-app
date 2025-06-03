@@ -95,6 +95,7 @@
                     </locations>
                     <baselineOnMigrate>true</baselineOnMigrate>
                     <cleanDisabled>${env.FLYWAY_CLEAN_DISABLED}</cleanDisabled>
+                    <outOfOrder>true</outOfOrder>
                 </configuration>
             </plugin>
 
