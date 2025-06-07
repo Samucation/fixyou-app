@@ -3,8 +3,6 @@ package com.fcamara.util;
 import br.com.caelum.stella.validation.CPFValidator;
 import br.com.caelum.stella.validation.InvalidStateException;
 import com.fcamara.exception.ResourceNotFoundException;
-import com.fcamara.model.PersonData;
-import com.fcamara.model.Profile;
 
 import java.time.Year;
 
@@ -28,30 +26,24 @@ public class ClientValidateUtil {
         }
     }
 
-
     /**
-     * Verifica se o CPF informado corresponde ao CPF do PersonData fornecido.
-     * Também valida se o CPF possui formato válido.
+     * Verifica se os dois CPFs informados são válidos e correspondem entre si.
      *
-     * @param cpf         o CPF externo a ser validado.
-     * @param personData  o PersonData com o CPF armazenado no banco.
-     * @throws IllegalArgumentException    se o CPF tiver formato inválido.
-     * @throws ResourceNotFoundException   se os CPFs não forem iguais ou PersonData for nulo.
+     * @param inputCpf    o CPF externo a ser validado.
+     * @param dbCpf       o CPF armazenado no banco de dados.
+     * @throws IllegalArgumentException    se qualquer CPF tiver formato inválido.
+     * @throws ResourceNotFoundException   se os CPFs não forem iguais.
      */
-    public static void isCpfExistInDataBase(String cpf, PersonData personData) {
-        isValidCpf(cpf);
+    public static void isCpfExistInDataBase(String inputCpf, String dbCpf) {
+        isValidCpf(inputCpf);
+        isValidCpf(dbCpf);
 
-        if (personData == null || personData.getCpf() == null) {
-            throw new ResourceNotFoundException("PersonData não encontrado ou CPF não cadastrado.");
-        }
-
-        if (!cpf.equals(personData.getCpf())) {
+        if (!inputCpf.equals(dbCpf)) {
             throw new ResourceNotFoundException(
-                    "O CPF informado (" + cpf + ") não corresponde ao CPF cadastrado (" + personData.getCpf() + ")."
+                    "O CPF informado (" + inputCpf + ") não corresponde ao CPF cadastrado (" + dbCpf + ")."
             );
         }
     }
-
 
     /**
      * Valida se o ano informado está dentro de um intervalo plausível.
